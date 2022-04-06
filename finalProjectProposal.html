@@ -53,41 +53,57 @@
             <li><p>Might need to agree on some request formats / protocols ahead of time, otherwise changing and editing them will be difficult to manage later on as more code is added.</p></li>
         </ul>
        
+        <h4>Physical Component:</h4>
+        <ul>
+            <li><p>We need to design PackMat to be usable but not obstructive.</p></li>
+            <ul>
+                <li><p>A physical mat might be ideal, but we may have issues fitting the components into a flat surface</p></li>
+                <li><p>We could also go for a larger dropbox</p></li>
+            </ul>
+            <li><p>Since the system is meant to be outside, how do we protect it from the weather or prevent it from going off due to the weight of precipitation?</p></li>
+            <ul>
+                <li><p>We don't want to enclose the scale because that would limit the size of items placeable in the box</p></li>
+                <li><p>Maybe we can allow increases in height and a certain amount of decrease over time for evaporation? This will depend on how sensitive the load bar is.</p></li>
+                <li><p>Maybe we can design PackMat so that snow and rain runs off the device?</p></li>
+            </ul>
+        </ul>
 
         <h3>Parts List</h3>
         <table>
             <tr>
+                <th>Item</th>
                 <th>Description</th>
                 <th>Item Number</th>
                 <th>Vendor</th>
                 <th>Price</th>
             </tr>
             <tr>
-                <th>Solderable Breadboard https://www.adafruit.com/product/1606 </th>
-                <th>1606</th>
-                <th>Adafruit</th>
-                <th>$6.95</th>
+                <th><p><a href="https://www.adafruit.com/product/1606">Solderable Breadboard</a></p></th>
+                <td>We will use this to integrate the physical components.</td>
+                <td>1606</td>
+                <td>Adafruit</td>
+                <td>$6.95</td>
             </tr>
             <tr>
-                <th>3x4 Number Pad: https://www.adafruit.com/product/419?gclid=CjwKCAjwi6WSBhA-EiwA6Niok7_ik9O5mUpQZAu8cVJi6zW27UNA665ET1Sop1D6nTW__4h9YBZazhoC5d8QAvD_BwE </th>
-                <th>419</th>
-                <th>Adafruit</th>
-                <th>$3.95</th>
+                <th><p><a href="https://www.adafruit.com/product/419?gclid=CjwKCAjwi6WSBhA-EiwA6Niok7_ik9O5mUpQZAu8cVJi6zW27UNA665ET1Sop1D6nTW__4h9YBZazhoC5d8QAvD_BwE">3x4 Number Pad:</a></p></th>
+                <td>This will be used to input pass codes into the device</td>
+                <td>419</td>
+                <td>Adafruit</td>
+                <td>$3.95</td>
             </tr>
             <tr>
-                <th>Load Cell Amplifier: https://www.sparkfun.com/products/13879?_ga=2.228677528.507380733.1648994760-989291874.1648994760
-                     </th>
-                <th>SEN-13879 ROHS</th>
-                <th>Sparkfun</th>
-                <th>$10.95</th>
+                <th><p><a href="https://www.sparkfun.com/products/13879?_ga=2.228677528.507380733.1648994760-989291874.1648994760">Load Cell Amplifier</a></p></th>
+                <td>Used to connect a load cell to the ESP32. Necessary for reading weight.</td>
+                <td>SEN-13879 ROHS</td>
+                <td>Sparkfun</td>
+                <td>$10.95</td>
             </tr>
             <tr>
-                <th>Load Bar : Load Bar
-                    https://www.digikey.com/en/products/detail/sparkfun-electronics/SEN-13329/7393715?utm_adgroup=Essen%20Deinki&utm_source=google&utm_medium=cpc&utm_campaign=Shopping_DK%2BSupplier_Other&utm_term=&utm_content=Essen%20Deinki&gclid=CjwKCAjwopWSBhB6EiwAjxmqDQgLsycx7yv0-HFdoNg3CouJxvCaUGPRKjRcCUQiao7flplv4pJrIhoCor0QAvD_BwE
-                    </th>
-                <th>SEN-13329</th>
-                <th>digikey</th>
-                <th>$8.50</th>
+                <th><p><a href="https://www.digikey.com/en/products/detail/sparkfun-electronics/SEN-13329/7393715?utm_adgroup=Essen%20Deinki&utm_source=google&utm_medium=cpc&utm_campaign=Shopping_DK%2BSupplier_Other&utm_term=&utm_content=Essen%20Deinki&gclid=CjwKCAjwopWSBhB6EiwAjxmqDQgLsycx7yv0-HFdoNg3CouJxvCaUGPRKjRcCUQiao7flplv4pJrIhoCor0QAvD_BwE">Load Bar</a></p></th>
+                <td>Used to read weight; changes resistance based on pressure on bar; works up to 10kg (22 lbs)</td>
+                <td>SEN-13329</td>
+                <td>digikey</td>
+                <td>$8.50</td>
             </tr>
         </table>
 
@@ -99,9 +115,12 @@
                 <th colspan="2">Claire</th>
                 <th colspan="2">Ye Cheng</th>
                 <th colspan="2">Madison</th>
+                <th colspan="2">Michael</th>
             </tr>
             <tr>
                 <th></th>
+                <th>Milestone</th>
+                <th>Demo</th>
                 <th>Milestone</th>
                 <th>Demo</th>
                 <th>Milestone</th>
@@ -130,6 +149,13 @@
                 <td>
                     Can test by running code and inputting print statements to check if states are changing in correct order based off simple button press.
                 </td>
+                <!--Michael-->
+                <td>
+                    Wire up pressure sensor and connect it to Load Cell Amplifier and calibrate it using a known weight.
+                </td>
+                <td>
+                    Show that load bar is sensitive to tiny objects through output from Serial Monitor.
+                </td>
             </tr>
             <tr>
                 <th>Week 2</th>
@@ -156,6 +182,13 @@
                 <td>
                     Change in pressure prompts Alarm screen on LCD (and can show my print statement).
                 </td>
+                <!--Michael-->
+                <td>
+                    Make a platform for the package to rest on
+                </td>
+                <td>
+                    Show that when package is removed LCD Alarm screen turns
+                </td>
             </tr>
             <tr>
                 <th>Week 3</th>
@@ -179,7 +212,13 @@
                     Entering the correct code enters unlocked mode on screen or secure mode. Or incorrect code entries continue to stay in the alarm state. 
                     (can show entrance into states by print statements in arduino). 
                 </td>
-                
+                <!--Michael-->
+                <td>
+                    Notify user/website when package is removed from mat
+                </td>
+                <td>
+                    When package is removed from mat website is notified through POST request which makes alarm goes off
+                </td>
             </tr>
             <tr>
                 <th>Week 4</th>
@@ -200,11 +239,19 @@
                 <td>
                     Show that entering code from website can turn off the alarm on package mat.
                 </td>
+                <!--Michael-->
+                <td>
+                    Solder all components in a PCB and hide them in the platform for the PackMat
+                </td>
+                <td>
+                    Show a somewhat aesthetic physical product of PackMat
+                </td>
             </tr>
         </table>
 
         <h3>On Campus Resources</h3>
         <p>May use lab time to work on project together but not many other on campus resources will be needed.</p>
+        <p>We'll likely need access to a wood shop and laser cutter to make the device. These are all available at the <a href="https://makerworkshop.mit.edu">MIT MakerWorkshop</a>, which we can get access to by signing up for orientation & training.</p> 
 
         <h3>Splitting the Work</h3>
         <p>Madison: In charge of state machine, designing the flow of system, and integration.</p>
