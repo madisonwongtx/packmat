@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Team 1 Final Project Proposal</title>
@@ -38,12 +39,20 @@
         <img src = "State_Maching_6.08_Project.jpg">
         
         <h3>Technical Challenges</h3>
-        <h5>Website:</h5>
-        <p>May need to implement security/ login functionality, since a public site allows pass codes to be viewable by anybody</p>
-        <p>Might need cookies to maintain login status when refreshing page / moving to different page</p>
-        <p>Can compromise with individual proof-of-concept public page if not possible on the 6.08 dev server</p>
-        <h5>Server:</h5>
-        <p>Might need to agree on some request formats / protocols ahead of time, otherwise changing and editing them will be difficult to manage later on as more code is added.</p>
+        <h4>Website:</h4>
+        <ul>
+            <li><p>May need to implement security/ login functionality, since a public site allows pass codes to be viewable by anybody</p></li>
+            <ul>
+                <li><p>Might need cookies to maintain login status when refreshing page / moving to different page</p></li>
+                <li><p>Can compromise with individual proof-of-concept public page if not possible on the 6.08 dev server</p></li>
+            </ul>
+        </ul>
+        
+        <h4>Server:</h4>
+        <ul>
+            <li><p>Might need to agree on some request formats / protocols ahead of time, otherwise changing and editing them will be difficult to manage later on as more code is added.</p></li>
+        </ul>
+       
 
         <h3>Parts List</h3>
         <table>
@@ -83,33 +92,79 @@
         </table>
 
 
-        <h3>Claire Demos and Milestones</h3>
+        <h3>Demos and Milestones</h3>
         <table>
             <tr>
                 <th></th>
+                <th colspan="2">Claire</th>
+                <th colspan="2">Ye Cheng</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Milestone</th>
+                <th>Demo</th>
                 <th>Milestone</th>
                 <th>Demo</th>
             </tr>
             <tr>
                 <th>Week 1 </th>
-                <th>Wire number pad and alarm and build 2 functions in Arduino: one that builds passcode and one that sounds an alarm</th>
-                <th>Show that when sequence is entered into number pad and matches hard-coded numbers, alarm will sound for 5 seconds</th>
+                <!--Claire-->
+                <td>Wire number pad and alarm and build 2 functions in Arduino: one that builds passcode and one that sounds an alarm</td>
+                <td>Show that when sequence is entered into number pad and matches hard-coded numbers, alarm will sound for 5 seconds</td>
+                <!--Ye Cheng-->
+                <td>
+                    <p>Server: Persistent storage and requests for getting / posting pass codes and alarm status</p>
+                    <p>Website: Barebones site that updates passcode and alarm status according to PackMat status</p>
+                </td>
+                <td>
+                    <p>Show passcode updating on the site when updated on ESP32 (by manually changing hard-coded passcode)</p>
+                    <p>Show that website updates when alarm sounds</p>
+                </td>
             </tr>
             <tr>
                 <th>Week 2</th>
-                <th>Connect the two functions so that the number pad and alarm interact the way it should</th>
-                <th>When the passcode is entered correctly the alarm goes off, but if it is entered incorrectly,
-                     LCD will show a message saying incorrect. Passcode will still be hard-coded </th>
+                <!--Claire-->
+                <td>Connect the two functions so that the number pad and alarm interact the way it should</td>
+                <td>When the passcode is entered correctly the alarm goes off, but if it is entered incorrectly,
+                     LCD will show a message saying incorrect. Passcode will still be hard-coded </td>
+                <!--Ye Cheng-->
+                <td>
+                    <p>Website: Site now tells the user if a package is or isn't on the mat, instead of just showing passcode.</p>
+                    <p>Implement an updating list of all times alarm has gone off.</p>
+                    <p>Implement UI to enter passcode and stop alarm.</p>
+                </td>
+                <td>
+                    <p>Show that the site displays the presence of a package on mat (after the passcode is entered). </p>
+                    <p>Show updating list of alarms by setting off alarms multiple times</p>
+                    <p>Show that alarm stops when passcode is entered on website</p>
+                </td>
             </tr>
             <tr>
                 <th>Week 3</th>
-                <th>Implement passcode-setting functionality</th>
-                <th>Press button to set code and then show that alarm turns off when it is correct and doesn’t turn off when it isn’t correct. </th>
+                <!--Claire-->
+                <td>Implement passcode-setting functionality</th>
+                <td>Press button to set code and then show that alarm turns off when it is correct and doesn't turn off when it isn't correct.</td>
+                <!--Ye Cheng-->
+                <td>
+                    <p>Server: Persistent storage for accounts and GET/POST requests for logging in</p>
+                    <p>Website: Implement login functionality and individual profiles.</p>
+                </td>
+                <td>
+                    <p>Show different users logging into website, and that their respective pages update differently depending on which PackMat device is being used.</p>
+                </td>
             </tr>
             <tr>
                 <th>Week 4</th>
-                <th>Clean up code and write http post request to webpage when alarm gets triggered</th>
-                <th>Show a presentable way of FSM for alarm and numberpad working and a serial print ln of the get request being sent and the appropriate response being received</th>
+                <!--Claire-->
+                <td>Clean up code and write http post request to webpage when alarm gets triggered</td>
+                <td>Show a presentable way of FSM for alarm and numberpad working and a serial print ln of the get request being sent and the appropriate response being received</td>
+                <!--Ye Cheng-->
+                <td>
+                    <p>CSS and final touches to the website; clean up server API</p>
+                </td>
+                <td>
+                    <p>Display a (hopefully) nice-looking web page to interface with the PackMat hardware, which updates according to events from the ESP32 and is able to control the PackMat's security functionality</p>
+                </td>
             </tr>
         </table>
 
