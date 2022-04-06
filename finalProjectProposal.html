@@ -98,9 +98,12 @@
                 <th></th>
                 <th colspan="2">Claire</th>
                 <th colspan="2">Ye Cheng</th>
+                <th colspan="2">Madison</th>
             </tr>
             <tr>
                 <th></th>
+                <th>Milestone</th>
+                <th>Demo</th>
                 <th>Milestone</th>
                 <th>Demo</th>
                 <th>Milestone</th>
@@ -120,6 +123,13 @@
                     <p>Show passcode updating on the site when updated on ESP32 (by manually changing hard-coded passcode)</p>
                     <p>Show that website updates when alarm sounds</p>
                 </td>
+                <!--Madison-->
+                <td>
+                    Initial coding and outline of the full state machine in Arudino as described in the State Machine header.
+                </td>
+                <td>
+                    Can test by running code and inputting print statements to check if states are changing in correct order based off simple button press.
+                </td>
             </tr>
             <tr>
                 <th>Week 2</th>
@@ -138,6 +148,14 @@
                     <p>Show updating list of alarms by setting off alarms multiple times</p>
                     <p>Show that alarm stops when passcode is entered on website</p>
                 </td>
+                <!--Madison-->
+                <td>
+                    Implement pressure sensor functionality (after it has been wired) and integrate with all states that are affected by it. Examples include decrease in 
+                    pressure during locked state changes state to alarm state.
+                </td>
+                <td>
+                    Change in pressure prompts Alarm screen on LCD (and can show my print statement).
+                </td>
             </tr>
             <tr>
                 <th>Week 3</th>
@@ -152,6 +170,16 @@
                 <td>
                     <p>Show different users logging into website, and that their respective pages update differently depending on which PackMat device is being used.</p>
                 </td>
+                <!--Madison-->
+                <td>
+                    Implement alarm and code entry functionality (after both have been wired) and integrate with states that are affected by it.
+                     Examples include initial code setting with increase in pressure and turning off alarm.
+                </td>
+                <td>
+                    Entering the correct code enters unlocked mode on screen or secure mode. Or incorrect code entries continue to stay in the alarm state. 
+                    (can show entrance into states by print statements in arduino). 
+                </td>
+                
             </tr>
             <tr>
                 <th>Week 4</th>
@@ -165,42 +193,18 @@
                 <td>
                     <p>Display a (hopefully) nice-looking web page to interface with the PackMat hardware, which updates according to events from the ESP32 and is able to control the PackMat's security functionality</p>
                 </td>
+                <!--Madison-->
+                <td>
+                    Integrate functionalities with website so that the user can control the package map from different location.
+                </td>
+                <td>
+                    Show that entering code from website can turn off the alarm on package mat.
+                </td>
             </tr>
         </table>
 
-        <h3>Madison's Demo and Milestones</h3>
-        <table>
-            <th></th>
-            <th>Milestone</th>
-            <th>Demo</th>
-            <tr>
-                <th>Week 1 </th>
-                <th>Initial coding and outline of the full state machine in Arudino as described in the State Machine header.
-                    </th>
-                <th>Can test by running code and inputting print statements to check if states are changing in correct order based off simple button press.
-                    </th>
-            </tr>
-            <tr>
-                <th>Week 2</th>
-                <th>Implement pressure sensor functionality (after it has been wired) and integrate with all states that are affected by it. Examples include decrease in pressure during locked state changes state to alarm state.
-                    </th>
-                <th>Change in pressure prompts Alarm screen on LCD (and can show my print statement).</th>
-            </tr>
-            <tr>
-                <th>Week 3</th>
-                <th>Implement alarm and code entry functionality (after both have been wired) and integrate with states that are affected by it. Examples include initial code setting with increase in pressure and turning off alarm.</th>
-                <th>Entering the correct code enters unlocked mode on screen or secure mode. Or incorrect code entries continue to stay in the alarm state. (can show entrance into states by print statements in arduino).  </th>
-            </tr>
-            <tr>
-                <th>Week 4</th>
-                <th>Integrate functionalities with website so that the user can control the package map from different location.
-                </th>
-                <th>Show that entering code from website can turn off the alarm on package mat.</th>
-            </tr>
-
-        </table>
-        
         <h3>On Campus Resources</h3>
+        <p>May use lab time to work on project together but not many other on campus resources will be needed.</p>
 
         <h3>Splitting the Work</h3>
         <p>Madison: In charge of state machine, designing the flow of system, and integration.</p>
