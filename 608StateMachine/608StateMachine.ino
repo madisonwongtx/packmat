@@ -7,6 +7,7 @@ const int input2 = 39; //pressure increase
 const int input3 = 38; //pressure decrease, yes, correct check
 const int input4 = 37; //no, incorrect check
 uint8_t state;
+int update;
 
 
 
@@ -54,6 +55,7 @@ void setup() {
   pinMode(input4, INPUT_PULLUP);
 
   print_message("REST");
+  update = 1;
 
 }
 
@@ -67,311 +69,448 @@ void loop() {
 void packmat(int input1, int input2, int input3, int input4){
   switch(state){
     case REST:
-      Serial.println("In Rest State");
+      if(update){ //so only prints once
+        Serial.println("In Rest State"); 
+        print_message("REST");
+        update = 0;
+      }
       if(!input2){//pressure increase
         Serial.println("Pressure increase detected.");
         Serial.println("Switching to package confirmation 1 state");
-        print_message("PC1");
+        //print_message("PC1");
+        update = 1;
         state = PC1;
       }
       break;
     
     case PC1:
-      Serial.println("In PC1 state");
+      if(update){ //so only prints once
+        Serial.println("In PC1 State"); 
+        print_message("PC1");
+        update = 0;
+      }
       if(!input3){//yes
         Serial.println("Package Confirmed");
         Serial.println("Switching to Program Mode 1");
-        print_message("PM1");
+        //print_message("PM1");
+        update = 1;
         state = PM1;
       }else if(!input4){//no
         Serial.println("No Package");
         Serial.println("Switching to Rest");
-        print_message("Rest");
+        //print_message("Rest");
+        update = 1;
         state = REST;
       }
       break;
 
     case PM1:
-      Serial.println("In PM1");
+      if(update){ //so only prints once
+        Serial.println("In PM1 State"); 
+        print_message("PM1");
+        update = 0;
+      }
       if(!input1){//entering numbers
         Serial.println("First number entered");
         Serial.println("Switching to Program Mode 2");
-        print_message("PM2");
+        //print_message("PM2");
+        update = 1;
         state = PM2;
       }
       break;
 
     case PM2:
-      Serial.println("In PM2");
+      if(update){ //so only prints once
+        Serial.println("In PM2 State"); 
+        print_message("PM2");
+        update = 0;
+      }
       if(!input1){//entering numbers
         Serial.println("Second number entered");
         Serial.println("Switching to Program Mode 3");
-        print_message("PM3");
+        //print_message("PM3");
+        update = 1;
         state = PM3;
       }
       break;
 
     case PM3:
-      Serial.println("In PM3");
+      if(update){ //so only prints once
+        Serial.println("In PM3 State"); 
+        print_message("PM3");
+        update = 0;
+      }
       if(!input1){//entering numbers
         Serial.println("Third number entered");
         Serial.println("Switching to Program Mode 4");
-        print_message("PM4");
+        //print_message("PM4");
+        update = 1;
         state = PM4;
       }
       break;
 
     case PM4:
-      Serial.println("In PM4");
+      if(update){ //so only prints once
+        Serial.println("In PM4 State"); 
+        print_message("PM4");
+        update = 0;
+      }
       if(!input1){//entering numbers
         Serial.println("Fourth number entered");
         Serial.println("Switching to Locked");
-        print_message("LOCKED");
+        //print_message("LOCKED");
+        update = 1;
         state = LOCKED;
       }
       break;
 
     case LOCKED:
-      Serial.println("In LOCKED state");
+      if(update){ //so only prints once
+        Serial.println("In LOCKED State"); 
+        print_message("LOCKED");
+        update = 0;
+      }
       if(!input2){//pressure increase
         Serial.println("Pressure Increase Detected");
         Serial.println("Swithcing to Package Confirmation 2");
-        print_message("PC2");
+        //print_message("PC2");
+        update = 1;
         state = PC2;
       }else if(!input3){ //pressure decrease
         Serial.println("Pressure Decrease Detected");
         Serial.println("Switching to Alarm");
-        print_message("ALARM");
+        //print_message("ALARM");
+        update = 1;
         state = ALARM;
       }else if(!input1){//unlock mode
         Serial.println("Entering Unlock mode");
         Serial.println("Switching to unlock mode 1");
-        print_message("UM1");
+        //print_message("UM1");
+        update = 1;
         state = UM1;
       }
       break;
     
     case PC2:
-      Serial.println("In PC2 state");
+      if(update){ //so only prints once
+        Serial.println("In PC2 State"); 
+        print_message("PC2");
+        update = 0;
+      }
       if(!input3){//yes
         Serial.println("Package Confirmed");
         Serial.println("Switching to LOCKED");
-        print_message("LOCKED");
+        //print_message("LOCKED");
+        update = 1;
         state = LOCKED;
       }else if(!input4){//no
         Serial.println("No Package");
         Serial.println("Switching to Alarm");
-        print_message("ALARM");
+        //print_message("ALARM");
+        update = 1;
         state = ALARM;
       }
       break;
 
     case ALARM:
-      Serial.println("In Alarm State");
+      if(update){ //so only prints once
+        Serial.println("In ALARM State"); 
+        print_message("ALARM");
+        update = 0;
+      }
       if (!input1){//stop alarm/unlock
         Serial.println("Attempting to turn off alarm");
         Serial.println("Switching to Alarm Stop 1");
-        print_message("AS1");
+        //print_message("AS1");
+        update = 1;
         state = AS1;
       }
       break;
     
     case AS1:
-      Serial.println("In Alarm Stop 1");
+      if(update){ //so only prints once
+        Serial.println("In Alarm Stop 1 State"); 
+        print_message("AS1");
+        update = 0;
+      }
       if(!input1){//entering number pad click
         Serial.println("First number entered");
         Serial.println("Switching to Alarm Check 1");
-        print_message("AC1");
+        //print_message("AC1");
+        update = 1;
         state = AC1;
       }
       break;
 
     case AC1:
-      Serial.println("In Alarm Check 1");
+      if(update){ //so only prints once
+        Serial.println("In Alarm Check 1 State"); 
+        print_message("AC1");
+        update = 0;
+      }
       if(!input3){ //correct
         Serial.println("Correct first number");
         Serial.println("Switching to Alarm Stop 2");
-        print_message("+AS2"); //+means correct
+        //print_message("+AS2"); //+means correct
+        update = 1;
         state = AS2;
       }else if(!input4){//incorrect
         Serial.println("Incorrect first number");
         Serial.println("Switching to Alarm");
-        print_message("ALARM");
+        //print_message("ALARM");
+        update = 1;
         state = ALARM;
       }
       break;
 
     case AS2:
-      Serial.println("In Alarm Stop 2");
+      if(update){ //so only prints once
+        Serial.println("In Alarm Stop 2 State"); 
+        print_message("AS2");
+        update = 0;
+      }
       if(!input1){//entering number pad click
         Serial.println("Second number entered");
         Serial.println("Switching to Alarm Check 2");
-        print_message("AC2");
+        //print_message("AC2");
+        update = 1;
         state = AC2;
       }
       break;
 
     case AC2:
-      Serial.println("In Alarm Check 2");
+      if(update){ //so only prints once
+        Serial.println("In Alarm Check 2 State"); 
+        print_message("AC2");
+        update = 0;
+      }
       if(!input3){ //correct
         Serial.println("Correct second number");
         Serial.println("Switching to AS3");
-        print_message("+AS3"); //+means correct
+        //print_message("+AS3"); //+means correct
+        update = 1;
         state = AS3;
       }else if(!input4){//incorrect
         Serial.println("Incorrect second number");
         Serial.println("Switching to Alarm");
-        print_message("ALARM");
+        //print_message("ALARM");
+        update = 1;
         state = ALARM;
       }
       break;
 
     case AS3:
-      Serial.println("In Alarm Stop 3");
+      if(update){ //so only prints once
+        Serial.println("In Alarm Stop 3 State"); 
+        print_message("AS3");
+        update = 0;
+      }
       if(!input1){//entering number pad click
         Serial.println("Third number entered");
         Serial.println("Switching to Alarm Check 3");
-        print_message("AC3");
+        //print_message("AC3");
+        update = 1;
         state = AC3;
       }
       break;
 
     case AC3:
-      Serial.println("In Alarm Check 3");
+      if(update){ //so only prints once
+        Serial.println("In Alarm Check 3 State"); 
+        print_message("AC3");
+        update = 0;
+      }
       if(!input3){ //correct
         Serial.println("Correct third number");
         Serial.println("Switching to AS4");
-        print_message("+AS4"); //+means correct
+        //print_message("+AS4"); //+means correct
+        update = 1;
         state = AS4;
       }else if(!input4){//incorrect
         Serial.println("Incorrect third number");
         Serial.println("Switching to Alarm");
-        print_message("ALARM");
+        //print_message("ALARM");
+        update = 1;
         state = ALARM;
       }
       break;
 
     case AS4:
-      Serial.println("In Alarm Stop 4");
+      if(update){ //so only prints once
+        Serial.println("In Alarm Stop 4 State"); 
+        print_message("AS4");
+        update = 0;
+      }
       if(!input1){//entering number pad click
         Serial.println("Fourth number entered");
         Serial.println("Switching to Alarm Check 4");
-        print_message("AC4");
+        //print_message("AC4");
+        update = 1;
         state = AC4;
       }
       break;
 
     case AC4:
-      Serial.println("In Alarm Check 4");
+      if(update){ //so only prints once
+        Serial.println("In Alarm Check 4 State"); 
+        print_message("AC4");
+        update = 0;
+      }
       if(!input3){ //correct
         Serial.println("Correct fourth number");
         Serial.println("Switching to REST");
-        print_message("+REST"); //+means correct
+        //print_message("+REST"); //+means correct
+        update = 1;
         state = REST;
       }else if(!input4){//incorrect
         Serial.println("Incorrect fourth number");
         Serial.println("Switching to Alarm");
-        print_message("ALARM");
+        //print_message("ALARM");
+        update = 1;
         state = ALARM;
       }
       break;
     
     case UM1:
-      Serial.println("In Unlock Mode 1");
+      if(update){ //so only prints once
+        Serial.println("In Unlock Mode 1 State"); 
+        print_message("UM1");
+        update = 0;
+      }
       if(!input1){//enter number
         Serial.println("First number entered");
         Serial.println("Switching to Unlock Check 1");
-        print_message("UC1");
+        //print_message("UC1");
+        update = 1;
         state = UC1;
       }
       break;
     
     case UC1:
-      Serial.println("In Unlock Check 1");
+      if(update){ //so only prints once
+        Serial.println("In Unlock Check 1 State"); 
+        print_message("UC1");
+        update = 0;
+      }
       if(!input3){//correct
         Serial.println("Correct first number");
         Serial.println("Switching to Unlock Mode 2");
-        print_message("+UM2");
+        //print_message("+UM2");
+        update = 1;
         state = UM2;
       }else if(!input4){//incorrect
         Serial.println("Incorrect first number");
         Serial.println("Switching to LOCKED");
-        print_message("LOCKED");
+        //print_message("LOCKED");
+        update = 1;
         state = LOCKED;
       }
       break;
 
     case UM2:
-      Serial.println("In Unlock Mode 2");
+      if(update){ //so only prints once
+        Serial.println("In Unlock Mode 2 State"); 
+        print_message("UM2");
+        update = 0;
+      }
       if(!input1){//enter number
         Serial.println("Second number entered");
         Serial.println("Switching to Unlock Check 2");
-        print_message("UC2");
+        //print_message("UC2");
+        update = 1;
         state = UC2;
       }
       break;
     
     case UC2:
-      Serial.println("In Unlock Check 2");
+      if(update){ //so only prints once
+        Serial.println("In Unlock Check 2 State"); 
+        print_message("UC2");
+        update = 0;
+      }
       if(!input3){//correct
         Serial.println("Correct second number");
         Serial.println("Switching to Unlock Mode 3");
-        print_message("+UM3");
+        //print_message("+UM3");
+        update = 1;
         state = UM3;
       }else if(!input4){//incorrect
         Serial.println("Incorrect second number");
         Serial.println("Switching to LOCKED");
-        print_message("LOCKED");
+        //print_message("LOCKED");
+        update = 1;
         state = LOCKED;
       }
       break;
 
     case UM3:
-      Serial.println("In Unlock Mode 3");
+      if(update){ //so only prints once
+        Serial.println("In Unlock Mode 3 State"); 
+        print_message("UM3");
+        update = 0;
+      }
       if(!input1){//enter number
         Serial.println("Third number entered");
         Serial.println("Switching to Unlock Check 3");
-        print_message("UC3");
+        //print_message("UC3");
+        update = 1;
         state = UC3;
       }
       break;
     
     case UC3:
-      Serial.println("In Unlock Check 3");
+      if(update){ //so only prints once
+        Serial.println("In Unlock Check 3 State"); 
+        print_message("UC3");
+        update = 0;
+      }
       if(!input3){//correct
         Serial.println("Correct third number");
         Serial.println("Switching to Unlock Mode 4");
-        print_message("+UM4");
+        //print_message("+UM4");
+        update = 1;
         state = UM4;
       }else if(!input4){//incorrect
         Serial.println("Incorrect third number");
         Serial.println("Switching to LOCKED");
-        print_message("LOCKED");
+        //print_message("LOCKED");
+        update = 1;
         state = LOCKED;
       }
       break;
 
     case UM4:
-      Serial.println("In Unlock Mode 4");
+      if(update){ //so only prints once
+        Serial.println("In Unlock Mode 4 State"); 
+        print_message("UM4");
+        update = 0;
+      }
       if(!input1){//enter number
         Serial.println("Fourth number entered");
         Serial.println("Switching to Unlock Check 4");
-        print_message("UC4");
+        //print_message("UC4");
+        update = 1;
         state = UC4;
       }
       break;
     
     case UC4:
-      Serial.println("In Unlock Check 4");
+      if(update){ //so only prints once
+        Serial.println("In Unlock Check 4 State"); 
+        print_message("UC4");
+        update = 0;
+      }
       if(!input3){//correct
         Serial.println("Correct fourth number");
         Serial.println("Switching to REST");
-        print_message("+REST");
+        //print_message("+REST");
+        update = 1;
         state = REST;
       }else if(!input4){//incorrect
         Serial.println("Incorrect fourth number");
         Serial.println("Switching to LOCKED");
-        print_message("LOCKED");
+        //print_message("LOCKED");
+        update = 1;
         state = LOCKED;
       }
       break;
@@ -379,7 +518,7 @@ void packmat(int input1, int input2, int input3, int input4){
   }
 }
 
-void print_message(char* message){
+void print_message(const char* message){
   tft.fillScreen(TFT_BLACK);
   tft.setCursor(0,0);
   tft.setTextSize(4);
