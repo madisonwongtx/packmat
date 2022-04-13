@@ -8,6 +8,17 @@
         <p>Madison, Ye Cheng, Claire, Michael</p>
         <h1>Goal 1</h1>
         <h2>Complete the initial outline and coding of the full state machine as described in the state machine diagram</h2>
-        <p></p>
+        <p>Similar to past design exercises and because of the complexity of our system, I first drew out a detailed state machine diagram in order to lay out my different states and 
+           what caused transitions to different states. Once there was a clear vision of how we wanted PackMat to work, I implemented the outline of it in C++. My goal 
+           for this week was to take the completed state machine and put it into code. Because I did not have any of the hardware pieces (as my team figured it would be easiest
+           to work on separately in parallel and then integrate), I utilized buttons in place of events. For example, pushing button in pin 39 signaled a pressure increase. 
+           With this, I utilized Serial print statements in order to show what state the system was currently in, what caused the state transition, and the state it would be switching to.
+           The purpose of the switch statements was to ensure that the logic of my code matched the logic of the drawn out state machine so that when it came time to integrate the necessary 
+           hardware, it would be much easier as well as make it easier on us to debug. One issue I did run into was really bad button bouncing and because I had limited buttons,
+           I was forced to use the same button for multiple events/changes. In order to solve this issue, I did input delays between state changes because these buttons will not actually 
+           be utilized in our
+           
+           This goal for week 1 was met (hooray!).
+        </p>
     </body>
 </html>
