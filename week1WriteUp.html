@@ -20,5 +20,28 @@
            
            With the process above, this goal for week 1 was met (hooray!).
         </p>
+        <h1>Goal 2</h1>
+        <h2>Complete the alarm and numberpad input functions</h2>
+        <p>The goal of this first week was to start writing functions that could then be used as modular components within the 
+            state machine. Specifically, we wrote a function, checkCode() that is run every loop iteration. This function checks to see
+            if there has been a numerical key pressed("A","B","C","D","*", and "#" are ignored). If so, it adds to the current integer array
+            representing the current code. Also, if it sees that 4 numbers have been entered, it marks as done(which can then be checked in the state machine) 
+            and resets the code entered. This done marker can be used in the state machine to check whether there is a code entered and also
+            whether the code entered was correct or incorrect. 
+
+            For week 1, we start with a hard-coded correct passcode. But this can easily be changed to be the result of the initial checkCode() loops.
+
+            The other function that we wrote was playTone() which plays one iteration of the alarm tone. In order to show this in the deliverable,
+            we coded another function playAlarm() that takes in a time to play the tone and continually plays the tone for that amount of time. Another thing to note
+            is that the playTone checks to make sure a global "alarm" variable is still set to 1 when it plays the tone. Thus, theoretically, if somewhere
+            else in the code alarm is set to 0, it should stop the tone.
+
+            These two functions combined with a simple if loop allow the arduino to play a tone for 5 seconds when the entered passcode is "1234", which is 
+            the hard-coded "correct passcode".
+
+            We've also added a post request in the proper format to our server code to alert the server that the alarm has been triggered.
+           
+           With the process above, this goal for week 1 was met (hooray!).
+        </p>
     </body>
 </html>
