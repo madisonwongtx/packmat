@@ -43,5 +43,39 @@
            
            With the process above, this goal for week 1 was met (hooray!).
         </p>
+        <h1>Goal 3</h1>
+        <h2>Create persistent storage and handling for passcode and alarm statuses</h2>
+        <p>
+            This week's goal on the server side was to first create an SQL table for passcode and alarm updates, as well as request handlers to interact with the table.
+            I also implemented an auto-updating site that displays the current passcode and alarm status of the system.
+        </p>
+        <p>
+            To implement the server, I used SQLite3 to create a table with the columns rec_time (datetime), user (text), is_active(BIT), passcode (text), and alarm_status (BIT).
+            The user and is_active columns will be used in future deliverables when implementing activation of the system and different users. This time, the demo 
+            mostly focuses on the passcode and alarm_status columns. The current possible requests are the following:
+        </p>
+        <p>
+            POST request: updates the SQL table with current status of system. To POST to the server, we can send a request to https://608dev-2.net/sandbox/sc/yechengz/packmat/request_handler.py 
+            with an x-www-form-urlencoded body of the following:
+            <ul>
+                <li>is_active: 0 or 1 - 1 if the Packmat system is active, 0 otherwise</li>
+                <li>alarm_status: 0 or 1 - 1 if alarm is active; 0 otherwise</li>
+                <li>passcode: numerical string - passcode to unlock packmat</li>
+            </ul>
+            
+            GET request: gets the latest status of the system. To GET, send a request to 
+            <a href="https://608dev-2.net/sandbox/sc/yechengz/packmat/request_handler.py">https://608dev-2.net/sandbox/sc/yechengz/packmat/request_handler.py</a> 
+            without any params. The response will contain the above parameters and their latest values in JSON. You can click on the link to see the latest response.
+        </p>
+        <p>
+            To implement the POST request, I first took the values from the request body, got the latest time with Datetime, and then made an INSERT query to the table
+            with a hardcoded user. To implement the GET request, I made a SELECT query for the row with the latest time and returned the result in JSON format.
+        </p>
+        <p>
+            In addition to the server, we also added a basic auto-updating site to display the current Packmat status. 
+            The site (<a href="https://608dev-2.net/sandbox/sc/yechengz/packmat/index.html">https://608dev-2.net/sandbox/sc/yechengz/packmat/index.html</a>) was implemented with HTML. 
+            Ajax was used in the script (scripts.js) to send a GET request every second to the request handler, allowing the site to update whenever 
+            the SQL table is updated, without needing to refresh the page.
+        </p> 
     </body>
 </html>
