@@ -77,5 +77,18 @@
             Ajax was used in the script (scripts.js) to send a GET request every second to the request handler, allowing the site to update whenever 
             the SQL table is updated, without needing to refresh the page.
         </p> 
+
+        <h1>Goal 4</h1>
+        <h2>Wire and Program/Calibrate Load Cell</h2>
+        <p>My goal this week was to get the load bar wired up and calibrated for weighing things. I was expecting to use the load bar that had screws and a Wheatstone bridge integrated in the bar, 
+            but that never came. Instead, the load cells came so I worked with them instead. I used four of them to try to obtain more accurate weight measurements. As seen in the diagram, I connected 
+            the red wires to the appropriate pins in the load cell amplifier and connected the A- and E- load cell whites together, the E+ and A+ whites together, the A- and E+ blacks together, and 
+            the A+ and E- blacks together. After downloading the hx711 source code from GitHub and placing a slab on top of the load cells, I couldn’t get any good readings. 
+            So, I thought of using hot glue to give the load cells some elevation. There could only be a slight change in voltage if the load cells are compressed, so if there is no 
+            elevation then it won’t be able to compress. After I added hot glue, I started to see readings that made a lot more sense. All I did was use the calibration example from the hx711 library
+             and followed the instructions when the program is running. I tared the weight of the slab and then placed a known weight on the slab and entered its mass in grams through the serial monitor. 
+             The program automatically calibrates using a calibration factor. The best one I got was around -20.37. The measurements from the serial monitor are somewhat close to the actual weights of the objects 
+             I place which is a really good sign. Using this information we can set something up in the code next week so that the program can detect sudden changes in weight.</p>
+
     </body>
 </html>
