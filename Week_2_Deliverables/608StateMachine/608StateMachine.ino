@@ -11,7 +11,6 @@ int update;
 float old_weight;
 float curr_weight;
 int THRESHOLD = 5;
-//bool first = true;
 
 //calibration set up
 #include <HX711_ADC.h>
@@ -134,7 +133,6 @@ void loop() {
 
   //end get weight
   packmat(digitalRead(input1), digitalRead(input2), digitalRead(input3), digitalRead(input4));
-//  first = false;
 
   //update old weight
   old_weight = curr_weight;
