@@ -8,7 +8,9 @@ const int input3 = 38; //pressure decrease, yes, correct check
 const int input4 = 37; //no, incorrect check, unlock mode
 uint8_t state;
 int update;
-
+float old_weight;
+float curr_weight;
+const int THRESHOLD = 5;
 
 
 //states 
