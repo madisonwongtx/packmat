@@ -11,6 +11,7 @@ int update;
 float old_weight;
 float curr_weight;
 int THRESHOLD = 5;
+//bool first = true;
 
 //calibration set up
 #include <HX711_ADC.h>
@@ -60,7 +61,7 @@ unsigned long t = 0;
 void setup() {
   // put your setup code here, to run once:
   //calibration set up 
-  Serial.begin(11520); delay(10);
+  Serial.begin(115200); delay(10);
   Serial.println();
   Serial.println("Starting...");
 
@@ -111,8 +112,8 @@ void loop() {
   if (newDataReady) {
     if (millis() > t + serialPrintInterval) {
       curr_weight = LoadCell.getData();
-      Serial.print("Load_cell output val: ");
-      Serial.println(curr_weight);
+      //Serial.print("Load_cell output val: ");
+      //Serial.println(curr_weight);
       newDataReady = 0;
       t = millis();
     }
@@ -133,6 +134,7 @@ void loop() {
 
   //end get weight
   packmat(digitalRead(input1), digitalRead(input2), digitalRead(input3), digitalRead(input4));
+//  first = false;
 
   //update old weight
   old_weight = curr_weight;
@@ -141,6 +143,7 @@ void loop() {
 
 //1: entering numbers/unlock mode, 2: pressure increase, 3: pressure decrease/yes/correct, 4: no/incorrect
 void packmat(int input1, int input2, int input3, int input4){
+  //Serial.println(curr_weight);
   switch(state){
     case REST:
       if(update){ //so only prints once

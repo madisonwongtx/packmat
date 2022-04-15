@@ -18,7 +18,7 @@
        float newCalibrationValue = LoadCell.getNewCalibration(known_mass);
 */
 
-
+/*
 void loop() {
   static boolean newDataReady = 0;
   const int serialPrintInterval = 0; //increase value to slow down serial print activity
@@ -185,3 +185,4 @@ void changeSavedCalFactor() {
   Serial.println("End change calibration value");
   Serial.println("***");
 }
+*/
