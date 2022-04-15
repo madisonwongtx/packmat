@@ -1,4 +1,25 @@
-float weight_readout(HX711_ADC LoadCell) {
+/*
+   -------------------------------------------------------------------------------------
+   HX711_ADC
+   Arduino library for HX711 24-Bit Analog-to-Digital Converter for Weight Scales
+   Olav Kallhovd sept2017
+   -------------------------------------------------------------------------------------
+*/
+
+/*
+   This example file shows how to calibrate the load cell and optionally store the calibration
+   value in EEPROM, and also how to change the value manually.
+   The result value can then later be included in your project sketch or fetched from EEPROM.
+
+   To implement calibration in your project sketch the simplified procedure is as follow:
+       LoadCell.tare();
+       //place known mass
+       LoadCell.refreshDataSet();
+       float newCalibrationValue = LoadCell.getNewCalibration(known_mass);
+*/
+
+
+void loop() {
   static boolean newDataReady = 0;
   const int serialPrintInterval = 0; //increase value to slow down serial print activity
 
