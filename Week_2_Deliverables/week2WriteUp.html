@@ -14,9 +14,19 @@
             the working code from the state machine and integrated the two. More specifically, we moved all necessary set up that 
             was in the calibration file into the set up of the state machine code. Then we initialized the necessary global variables
             in the state machine that were needed. Finally, we moved the code that took the actual measurements on the load cells
-            from the calibration file to the state machine file in the loop. We initialize two global variables, `curr_weight` and `old_weight`. 
+            from the calibration file to the state machine file in the loop. We initialize three global variables, `curr_weight` and `old_weight`. The 
+            third global variable being a constant called `THRESHOLD` to account for the small changes in the load cells despite the stationary state 
+            and being the delta needed to surpass in order to trigger a transition to the next state.
             The `curr_weight` will be updated each time through the loop with the value give by the load cells. The function with 
             our state machine then follows. After calling our state machine code, we set `old_weight' to equal `curr_weight`. So with
-            each loop, both `curr_weight` and `old_weight' are updated.
+            each loop, both `curr_weight` and `old_weight' are updated. In between, we call our code for the state machine. The goal of 
+            this deliverable is to have the state machine working as described by the state machine diagram but the 
+            button emulating the event of pressure increases or decreases is replaced with the actual load cells detecting changes.
+            There are three states where we removed the button checks: switching from rest to pacakge confirmation 1 state, switching
+            from locked to package confirmation 2 state, and from locked to alarm state. If we were looking for a pressure increase,
+            we checked that the `curr_weight`-`old_weight` > THRESHOLD in order to switch states. With pressure decrease, we checked
+            that the `old_weight`-`curr_weight` > THRESHOLD in order to change states.
+
+            With the process above, this goal for the week was met (hooray!).
     </body>
 </html>
