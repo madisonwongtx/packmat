@@ -558,8 +558,14 @@ void packmat(int input1, int input2, int input3, int input4){
         passcode[numCoded] = keypad.getKey()-'0';
         numCoded += 1;
         update = 1;
-        delay(150);
+        //delay(150);
         state = AC1;
+      }
+      else if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
       }
       break;
 
@@ -569,7 +575,13 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("AC1");
         update = 0;
       }
-      if(passcode[0] == correctPasscode[0]){ //correct
+      if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
+      else if(passcode[0] == correctPasscode[0]){ //correct
         Serial.println("Correct first number");
         Serial.println("Switching to Alarm Stop 2");
         //print_message("+AS2"); //+means correct
@@ -602,6 +614,12 @@ void packmat(int input1, int input2, int input3, int input4){
         delay(150);
         state = AC2;
       }
+      else if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
       break;
 
     case AC2:
@@ -610,7 +628,13 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("AC2");
         update = 0;
       }
-      if(passcode[1] == correctPasscode[1]){ //correct
+      if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
+      else if(passcode[1] == correctPasscode[1]){ //correct
         Serial.println("Correct second number");
         Serial.println("Switching to AS3");
         //print_message("+AS3"); //+means correct
@@ -643,6 +667,12 @@ void packmat(int input1, int input2, int input3, int input4){
         delay(150);
         state = AC3;
       }
+      else if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
       break;
 
     case AC3:
@@ -651,7 +681,13 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("AC3");
         update = 0;
       }
-      if(passcode[2] == correctPasscode[2]){ //correct
+      if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
+      else if(passcode[2] == correctPasscode[2]){ //correct
         Serial.println("Correct third number");
         Serial.println("Switching to AS4");
         //print_message("+AS4"); //+means correct
@@ -684,6 +720,12 @@ void packmat(int input1, int input2, int input3, int input4){
         delay(150);
         state = AC4;
       }
+      else if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
       break;
 
     case AC4:
@@ -691,6 +733,12 @@ void packmat(int input1, int input2, int input3, int input4){
         Serial.println("In Alarm Check 4 State"); 
         print_message("AC4");
         update = 0;
+      }
+      if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
       }
       if(passcode[3] == correctPasscode[3]){ //correct
         Serial.println("Correct fourth number");
@@ -725,6 +773,12 @@ void packmat(int input1, int input2, int input3, int input4){
         delay(150);
         state = UC1;
       }
+      else if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
       break;
     
     case UC1:
@@ -733,7 +787,13 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("UC1");
         update = 0;
       }
-      if(passcode[0] == correctPasscode[0]){//correct
+      if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
+      else if(passcode[0] == correctPasscode[0]){//correct
         Serial.println("Correct first number");
         Serial.println("Switching to Unlock Mode 2");
         //print_message("+UM2");
@@ -766,6 +826,12 @@ void packmat(int input1, int input2, int input3, int input4){
         delay(150);
         state = UC2;
       }
+      else if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
       break;
     
     case UC2:
@@ -774,7 +840,13 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("UC2");
         update = 0;
       }
-      if(passcode[1] == correctPasscode[1]){//correct
+      if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
+      else if(passcode[1] == correctPasscode[1]){//correct
         Serial.println("Correct second number");
         Serial.println("Switching to Unlock Mode 3");
         //print_message("+UM3");
@@ -807,6 +879,12 @@ void packmat(int input1, int input2, int input3, int input4){
         delay(150);
         state = UC3;
       }
+      else if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
       break;
     
     case UC3:
@@ -815,7 +893,13 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("UC3");
         update = 0;
       }
-      if(passcode[2] == correctPasscode[2]){//correct
+      if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
+      else if(passcode[2] == correctPasscode[2]){//correct
         Serial.println("Correct third number");
         Serial.println("Switching to Unlock Mode 4");
         //print_message("+UM4");
@@ -848,6 +932,12 @@ void packmat(int input1, int input2, int input3, int input4){
         delay(150);
         state = UC4;
       }
+      else if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
+      }
       break;
     
     case UC4:
@@ -855,6 +945,12 @@ void packmat(int input1, int input2, int input3, int input4){
         Serial.println("In Unlock Check 4 State"); 
         print_message("UC4");
         update = 0;
+      }
+      if (checkWebsiteAlarmStatus() == 0){
+        //alarm turns off so switch to state REST
+        state = REST;
+        //reset the numCoded 
+        numCoded = 0;
       }
       if(passcode[3] == correctPasscode[3]){//correct
         Serial.println("Correct fourth number");
