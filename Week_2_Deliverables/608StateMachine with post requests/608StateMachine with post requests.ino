@@ -167,7 +167,7 @@ void postUpdate(int alarm_status, int is_active){
   Serial.println(body);
   char currPasscode[2];
   for(int i = 0;i < KEY_LENGTH; i++){
-    sprintf(currPasscode,"%d",passcode[i]);
+    sprintf(currPasscode,"%d",correctPasscode[i]);
     strcat(body,currPasscode);
   }
   Serial.println(body);
@@ -324,6 +324,10 @@ void setup() {
     ESP.restart(); // restart the ESP (proper way)
   }
 
+  for (int i = 0; i < KEY_LENGTH; i++) {
+    correctPasscode[i] = '0';
+  }
+
   postUpdate(0, 0);
   alarm_on = 0;
   numCoded = 0;
@@ -374,6 +378,7 @@ void loop() {
 
 //1: entering numbers/unlock mode, 2: pressure increase, 3: pressure decrease/yes/correct, 4: no/incorrect
 void packmat(int input1, int input2, int input3, int input4){
+  char key;
   //Serial.println(curr_weight);
   switch(state){
     case REST:
@@ -421,11 +426,14 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("PM1");
         update = 0;
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering numbers
+      key = keypad.getKey();
+      if(key && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#'){//entering numbers
         Serial.println("First number entered");
         Serial.println("Switching to Program Mode 2");
         //print_message("PM2");
-        correctPasscode[numCoded] = keypad.getKey()-'0';
+        Serial.println(key);
+        correctPasscode[numCoded] = key -'0';
+        Serial.println(correctPasscode[numCoded]);
         numCoded += 1;
         update = 1;
         //delay(150);
@@ -439,11 +447,14 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("PM2");
         update = 0;
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering numbers
+      key = keypad.getKey();
+      if(key && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#'){//entering numbers
         Serial.println("Second number entered");
         Serial.println("Switching to Program Mode 3");
         //print_message("PM3");
-        correctPasscode[numCoded] = keypad.getKey()-'0';
+        Serial.println(key);
+        correctPasscode[numCoded] = key -'0';
+        Serial.println(correctPasscode[numCoded]);
         numCoded += 1;
         update = 1;
         //delay(150);
@@ -457,11 +468,14 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("PM3");
         update = 0;
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering numbers
+      key = keypad.getKey();
+      if(key && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#'){//entering numbers
         Serial.println("Third number entered");
         Serial.println("Switching to Program Mode 4");
         //print_message("PM4");
-        correctPasscode[numCoded] = keypad.getKey()-'0';
+        Serial.println(key);
+        correctPasscode[numCoded] = key -'0';
+        Serial.println(correctPasscode[numCoded]);
         numCoded += 1;
         update = 1;
         //delay(150);
@@ -475,11 +489,14 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("PM4");
         update = 0;
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering numbers
+      key = keypad.getKey();
+      if(key && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#'){//entering numbers
         Serial.println("Fourth number entered");
         Serial.println("Switching to Locked");
         //print_message("LOCKED");
-        correctPasscode[numCoded] = keypad.getKey()-'0';
+        Serial.println(key);
+        correctPasscode[numCoded] = key -'0';
+        Serial.println(correctPasscode[numCoded]);
         postUpdate(0, 1);
         numCoded = 0;
         update = 1;
