@@ -28,5 +28,20 @@
             that the `old_weight`-`curr_weight` > THRESHOLD in order to change states.
 
             With the process above, this goal for the week was met (hooray!).
+        </p>
+        <h2>Goal 2</h2>
+        <h3>Implement Auto Calibration Upon Startup and State Machine Load Cell Integration</h3>
+        <p>So last week I used the calibration example code to calibrate the Packmat platform. The inconvenience with this code is that every 
+            time upon startup I have to follow the program instructions: tare the slab, place a known weight, press some keys and then store the 
+            calibration value. This takes a while. What I ended up doing to calibrate upon start up is to use the calibrate factor obtained previously 
+            and hard code that value into LoadCell.setCalFactor. The calibration value I ended up using that got me within a tolerance of a gram is -20.55. 
+            This value works really well every time the program runs, so there is no need to do any fancy calculations upon startup. After seeing that the 
+            readouts were really close to the true value of the “package”, I worked with Maddison to help integrate the load cell code into her state 
+            machine code. The key part of the state machine code was keeping track of the current package weight and comparing that to the old package 
+            weight. And depending on whether there is no weight change, and increase in weight, or a decrease in weight will the code go into certain 
+            states depending on weight changes. The load cell implementation worked really well as you can see in Maddison’s demo video. 
+            Deliverable was met.
+        </p>
     </body>
+
 </html>
