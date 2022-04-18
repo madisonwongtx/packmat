@@ -7,15 +7,15 @@ function getStatus() {
         success: function (data) {
             if (data['is_active'] === 0) {
                 $('#passcode').text('System not active');
+                $('#passcode-form').hide();
             } else {
                 $('#passcode').text('Passcode: ' + data['passcode']);
+                $('#passcode-form').show();
             }
             if (data['alarm_status'] === 0) {
                 $('#alarm_status').text('Alarm status: off');
-                $('#passcode-form').hide();
             } else {
                 $('#alarm_status').text('Alarm status: on');
-                $('#passcode-form').show();
             }
         },
         complete: function (data) {
@@ -33,12 +33,10 @@ function checkPasscode() {
         contentType: 'application/x-www-form-urlencoded',
         dataType: "json",
         success: function (data) {
-            if (data['alarm_status'] === 1) {
+            if (data['is_active'] === 1) {
                 $('#message').text('Passcode did not match. Please try again');
-                $('#passcode-form').show();
             } else {
-                $('#message').text('Alarm stopped');
-                $('#passcode-form').hide();
+                $('#message').text('System deactivated.');
             }
         },
     });

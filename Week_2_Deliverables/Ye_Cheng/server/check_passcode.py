@@ -25,9 +25,9 @@ def check_passcode(user, passcode):
 	latest = get_latest_state(user)
 
 	if passcode == latest['passcode']:
-		post_state(user, latest['is_active'], passcode, 0)
+		post_state(user, 0, passcode, 0)
 
 	latest = get_latest_state(user)
-	return {'alarm_status': latest['alarm_status'], 'message': 'successfully checked passcode'}
+	return {'alarm_status': latest['alarm_status'], 'is_active': latest['is_active'], 'message': 'successfully checked passcode'}
 
 	
