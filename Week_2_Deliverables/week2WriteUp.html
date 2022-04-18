@@ -10,7 +10,13 @@
         <h3>Implement load cells and integrate with all states affected by it.</h3>
         <p>
             Following the same successful state diagram that was coded and outlined from the week 1 deliverable, 
-            we integrated the load cells. In order to do this, we first wired d
-        </p>
+            we integrated the load cells. In order to do this, we first took the working code from calibrating the load cells and 
+            the working code from the state machine and integrated the two. More specifically, we moved all necessary set up that 
+            was in the calibration file into the set up of the state machine code. Then we initialized the necessary global variables
+            in the state machine that were needed. Finally, we moved the code that took the actual measurements on the load cells
+            from the calibration file to the state machine file in the loop. We initialize two global variables, `curr_weight` and `old_weight`. 
+            The `curr_weight` will be updated each time through the loop with the value give by the load cells. The function with 
+            our state machine then follows. After calling our state machine code, we set `old_weight' to equal `curr_weight`. So with
+            each loop, both `curr_weight` and `old_weight' are updated.
     </body>
 </html>
