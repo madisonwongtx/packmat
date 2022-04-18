@@ -107,21 +107,29 @@ void do_http_request(const char* host, char* request, char* response, uint16_t r
   }
 }        
 
-void postUpdate(int alarm_status){
+void postUpdate(int alarm_status, int is_active){
   Serial.println("start post update");
   sprintf(body, "passcode=");
   Serial.println(body);
   char currPasscode[2];
   for(int i = 0;i < KEY_LENGTH; i++){
-    sprintf(currPasscode,"%d",passcode[i]);
+    sprintf(currPasscode,"%d",correctPasscode[i]);
     strcat(body,currPasscode);
   }
   Serial.println(body);
   if(alarm_status == 1){
-    strcat(body, "&alarm_status=1&is_active=1"); //generate body, posting temp, humidity to server
+    if(is_active == 1){
+      strcat(body, "&alarm_status=1&is_active=1");
+    }else{
+      strcat(body, "&alarm_status=1&is_active=0"); 
+    }
   }
   else if(alarm_status == 0){
-    strcat(body, "&alarm_status=0&is_active=1"); //generate body, posting temp, humidity to server
+   if(is_active == 1){
+      strcat(body, "&alarm_status=0&is_active=1");
+    }else{
+      strcat(body, "&alarm_status=0&is_active=0"); 
+    }
   }
   Serial.println(body);
   int body_len = strlen(body); //calculate body length (for header reporting)
@@ -264,12 +272,12 @@ void loop() {
     if(correct == false){
       alarmStart = millis();
       alarm_on=1;
-      postUpdate(1);
+      postUpdate(1,1);
     }
     else if(correct == true){
       alarm_on = 0;
       
-      postUpdate(0);
+      postUpdate(0,0);
     }
     done = 0;
   }
