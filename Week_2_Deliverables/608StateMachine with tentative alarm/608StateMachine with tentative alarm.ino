@@ -19,13 +19,14 @@ int THRESHOLD = 5;
 #include <SPI.h> //Used in support of TFT Display
 #include <string.h>  //used for some string handling and processing.
 #include <Wire.h>
+#include <ArduinoJson.h>
 #if defined(ESP8266)|| defined(ESP32) || defined(AVR)
 #include <EEPROM.h>
 #endif
 
 //pins:
-const int HX711_dout = 8; //mcu > HX711 dout pin
-const int HX711_sck = 9; //mcu > HX711 sck pin
+const int HX711_dout = 21; //mcu > HX711 dout pin
+const int HX711_sck = 20; //mcu > HX711 sck pin
 
 //HX711 constructor:
 HX711_ADC LoadCell(HX711_dout, HX711_sck);
@@ -315,7 +316,7 @@ void setup() {
     ESP.restart(); // restart the ESP (proper way)
   }
   alarm_on = 0;
-  num_coded = 0;
+  numCoded = 0;
   lastRemoteCheck = millis();
   timer = millis();
 }
