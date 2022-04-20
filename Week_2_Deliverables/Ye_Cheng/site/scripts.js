@@ -1,4 +1,13 @@
-var interval = 1000;
+var statusInterval = 1000;
+var alarmInterval = 3000;
+setTimeout(getStatus(), statusInterval);
+setTimeout(getAlarmTimes(), alarmInterval);
+
+$('#passcode-form').submit(function(event) { 
+    checkPasscode();
+    event.preventDefault();
+});
+
 function getStatus() {
     $.ajax({
         type: "GET",
@@ -19,11 +28,30 @@ function getStatus() {
             }
         },
         complete: function (data) {
-            setTimeout(getStatus, interval);
+            setTimeout(getStatus, statusInterval);
         }
     });
 }
-setTimeout(getStatus(), interval);
+
+function getAlarmTimes() {
+    $.ajax({
+        type: "GET",
+        url: "https://608dev-2.net/sandbox/sc/yechengz/packmat/alarms.py",
+        dataType: "json",
+        success: function (data) {
+            $('#alarms-list').empty();
+            for (let i = 0; i < data['times'].length; i++) {
+                let dateString = Date.parse(data['times'][i] + ' UTC');
+                let date = new Date(dateString);
+                let time = date.toLocaleString();
+                $('#alarms-list').append('<li>' + time +'</li>');
+            }
+        },
+        complete: function (data) {
+            setTimeout(getAlarmTimes, alarmInterval);
+        }
+    });
+}
 
 function checkPasscode() {
     $.ajax({
@@ -42,7 +70,3 @@ function checkPasscode() {
     });
 }
 
-$('#passcode-form').submit(function(event) { 
-    checkPasscode();
-    event.preventDefault();
-});

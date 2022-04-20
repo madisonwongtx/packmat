@@ -29,3 +29,14 @@ def get_latest_state(user):
 	conn.close()
 	result = {'is_active': is_active, 'passcode': passcode, 'alarm_status': alarm_status, 'message': 'success'}
 	return result
+
+def get_alarm_list(user):
+	conn = sqlite3.connect(packmat)
+	c = conn.cursor()
+	rows = c.execute('''SELECT * FROM state_db WHERE user = ? AND alarm_status = 1 AND is_active = 1 ORDER BY rec_time DESC;''', (user,)).fetchall()
+	result = []
+	for r in rows:
+		result.append(r[0])
+	conn.commit()
+	conn.close()
+	return {'times': result, 'message': 'successfully got times'}
