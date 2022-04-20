@@ -42,6 +42,16 @@
             states depending on weight changes. The load cell implementation worked really well as you can see in Maddison’s demo video. 
             Deliverable was met.
         </p>
+        <h2>Goal 3</h2>
+        <h3>Allow for remote turn-off of alarm</h3>
+        <p>When an incorrect code is inputted, the alarm is turned on and the appropriate post request is sent to the server.
+            On the server, there is a prompt that allows for the user to remotely enter in the correct passcode. If the password
+            entered on the remote server is correct, then it will turn it's internal state to have alarm_status equal to 1. Thus, the code
+            on our ESP32, every set period of time(in this case we are setting it to 1 second), we send a get request to the server in order
+            to check whether the alarm status is still on; if the get request results in an alarm status of 0, then that means the correct passcode
+            was entered on the server, and we can therefore turn the alarm off on our ESP32. Meanwhile, we still allow for manual entering of the 
+            correct passcode on the numberpad, as seen in last week's deliverable. Deliverable is met
+        </p>
     </body>
 
 </html>

@@ -63,6 +63,7 @@ int numCoded;
 
 long lastRemoteCheck;
 long timer;
+long lastTone;
 const int REMOTE_CHECK_PERIOD = 1000;
 
 //states 
@@ -161,21 +162,29 @@ void do_http_request(const char* host, char* request, char* response, uint16_t r
   }
 }        
 
-void postUpdate(int alarm_status){
+void postUpdate(int alarm_status, int is_active){
   Serial.println("start post update");
   sprintf(body, "passcode=");
   Serial.println(body);
   char currPasscode[2];
   for(int i = 0;i < KEY_LENGTH; i++){
-    sprintf(currPasscode,"%d",passcode[i]);
+    sprintf(currPasscode,"%d",correctPasscode[i]);
     strcat(body,currPasscode);
   }
   Serial.println(body);
   if(alarm_status == 1){
-    strcat(body, "&alarm_status=1&is_active=1"); //generate body, posting temp, humidity to server
+    if (is_active == 1) {
+      strcat(body, "&alarm_status=1&is_active=1");
+    } else {
+      strcat(body, "&alarm_status=1&is_active=0");
+    }
   }
   else if(alarm_status == 0){
-    strcat(body, "&alarm_status=0&is_active=1"); //generate body, posting temp, humidity to server
+    if (is_active == 1) {
+      strcat(body, "&alarm_status=0&is_active=1");
+    } else {
+      strcat(body, "&alarm_status=0&is_active=0");
+    }
   }
   Serial.println(body);
   int body_len = strlen(body); //calculate body length (for header reporting)
@@ -189,6 +198,11 @@ void postUpdate(int alarm_status){
   Serial.println(request_buffer);
   do_http_request("608dev-2.net", request_buffer, response_buffer, OUT_BUFFER_SIZE, RESPONSE_TIMEOUT, true);
   Serial.println(response_buffer); //viewable in Serial Terminal
+  const int capacity = 300;
+  StaticJsonDocument<capacity> doc;
+  deserializeJson(doc,response_buffer);
+  int status = doc["alarm_status"];
+  alarm_on = status;
 }
 
 void playTone(){
@@ -243,11 +257,10 @@ void setup() {
     while (1);
   }
   else {
-    LoadCell.setCalFactor(1.0); // user set calibration value (float), initial value 1.0 may be used for this sketch
+    LoadCell.setCalFactor(-20.5); // user set calibration value (float), initial value 1.0 may be used for this sketch
     Serial.println("Startup is complete");
   }
   while (!LoadCell.update());
-  calibrate(); //start calibration procedure
 
   //button set up
   tft.init();
@@ -315,10 +328,17 @@ void setup() {
     Serial.println(WiFi.status());
     ESP.restart(); // restart the ESP (proper way)
   }
+
+  for (int i = 0; i < KEY_LENGTH; i++) {
+    correctPasscode[i] = 0;
+  }
+
+  postUpdate(0, 0);
   alarm_on = 0;
   numCoded = 0;
   lastRemoteCheck = millis();
   timer = millis();
+  lastTone = millis();
 }
 
 void loop() {
@@ -364,22 +384,30 @@ void loop() {
 
 //1: entering numbers/unlock mode, 2: pressure increase, 3: pressure decrease/yes/correct, 4: no/incorrect
 void packmat(int input1, int input2, int input3, int input4){
+  char key = keypad.getKey();
   //Serial.println(curr_weight);
   switch(state){
     case REST:
+      ledcWriteTone(AUDIO_PWM,0);
+      numCoded = 0;
       if(update){ //so only prints once
         Serial.println("In Rest State"); 
         print_message("REST");
         update = 0;
+        postUpdate(0, 0);
       }
-      if(curr_weight - old_weight>THRESHOLD){//pressure increase
+      else{
+        state = PC1;
+        update = 1;
+      }
+      /*if(curr_weight - old_weight>THRESHOLD){//pressure increase
         Serial.println("Pressure increase detected.");
         Serial.println("Switching to package confirmation 1 state");
         //print_message("PC1");
         update = 1;
         //delay(150);
         state = PC1;
-      }
+      }*/
       break;
     
     case PC1:
@@ -411,11 +439,13 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("PM1");
         update = 0;
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering numbers
+      if(key && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#'){//entering numbers
         Serial.println("First number entered");
         Serial.println("Switching to Program Mode 2");
         //print_message("PM2");
-        correctPasscode[numCoded] = keypad.getKey()-'0';
+        Serial.println(key);
+        correctPasscode[numCoded] = key -'0';
+        Serial.println(correctPasscode[numCoded]);
         numCoded += 1;
         update = 1;
         //delay(150);
@@ -429,11 +459,13 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("PM2");
         update = 0;
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering numbers
+      if(key && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#'){//entering numbers
         Serial.println("Second number entered");
         Serial.println("Switching to Program Mode 3");
         //print_message("PM3");
-        correctPasscode[numCoded] = keypad.getKey()-'0';
+        Serial.println(key);
+        correctPasscode[numCoded] = key -'0';
+        Serial.println(correctPasscode[numCoded]);
         numCoded += 1;
         update = 1;
         //delay(150);
@@ -447,11 +479,13 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("PM3");
         update = 0;
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering numbers
+      if(key && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#'){//entering numbers
         Serial.println("Third number entered");
         Serial.println("Switching to Program Mode 4");
         //print_message("PM4");
-        correctPasscode[numCoded] = keypad.getKey()-'0';
+        Serial.println(key);
+        correctPasscode[numCoded] = key -'0';
+        Serial.println(correctPasscode[numCoded]);
         numCoded += 1;
         update = 1;
         //delay(150);
@@ -465,11 +499,14 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("PM4");
         update = 0;
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering numbers
+      if(key && key != 'A' && key != 'B' && key != 'C' && key != 'D' && key != '*' && key != '#'){//entering numbers
         Serial.println("Fourth number entered");
         Serial.println("Switching to Locked");
         //print_message("LOCKED");
-        correctPasscode[numCoded] = keypad.getKey()-'0';
+        Serial.println(key);
+        correctPasscode[numCoded] = key -'0';
+        Serial.println(correctPasscode[numCoded]);
+        postUpdate(0, 1);
         numCoded = 0;
         update = 1;
         //delay(150);
@@ -481,6 +518,8 @@ void packmat(int input1, int input2, int input3, int input4){
       if(update){ //so only prints once
         Serial.println("In LOCKED State"); 
         print_message("LOCKED");
+        postUpdate(0, 1);
+        numCoded = 0;
         update = 0;
       }
       if((curr_weight - old_weight)>THRESHOLD){//pressure increase
@@ -526,7 +565,7 @@ void packmat(int input1, int input2, int input3, int input4){
         //print_message("ALARM");
         alarmStart = millis();
         alarm_on = 1;
-        postUpdate(1);
+        postUpdate(1, 1);
         playTone();
         update = 1;
         //delay(150);
@@ -535,9 +574,13 @@ void packmat(int input1, int input2, int input3, int input4){
       break;
 
     case ALARM:
+      playTone();
+      numCoded = 0;
       if(update){ //so only prints once
         Serial.println("In ALARM State"); 
         print_message("ALARM");
+        postUpdate(1, 1);
+        alarm_on=1;
         update = 0;
       }
       if (!input4){//stop alarm/unlock
@@ -551,6 +594,10 @@ void packmat(int input1, int input2, int input3, int input4){
       break;
     
     case AS1:
+      if(millis()-lastTone >= 200){
+        lastTone = millis();
+        playTone();
+      }
       if(update){ //so only prints once
         Serial.println("In Alarm Stop 1 State"); 
         print_message("AS1");
@@ -568,11 +615,17 @@ void packmat(int input1, int input2, int input3, int input4){
           lastRemoteCheck = millis();
         }
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering number pad click
+      if(alarm_on == 0){
+        state = REST;
+          //reset the numCoded 
+          numCoded = 0;
+          break;
+      }
+      if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//entering number pad click
         Serial.println("First number entered");
         Serial.println("Switching to Alarm Check 1");
         //print_message("AC1");
-        passcode[numCoded] = keypad.getKey()-'0';
+        passcode[numCoded] = key-'0';
         numCoded += 1;
         update = 1;
         ////delay(150);
@@ -582,6 +635,11 @@ void packmat(int input1, int input2, int input3, int input4){
       break;
 
     case AC1:
+
+      if(millis()-lastTone >= 200){
+        lastTone = millis();
+        playTone();
+      }
       if(update){ //so only prints once
         Serial.println("In Alarm Check 1 State"); 
         print_message("AC1");
@@ -598,6 +656,12 @@ void packmat(int input1, int input2, int input3, int input4){
         else{
           lastRemoteCheck = millis();
         }
+      }
+      if(alarm_on == 0){
+        state = REST;
+          //reset the numCoded 
+          numCoded = 0;
+          break;
       }
       if(passcode[0] == correctPasscode[0]){ //correct
         Serial.println("Correct first number");
@@ -617,6 +681,10 @@ void packmat(int input1, int input2, int input3, int input4){
       break;
 
     case AS2:
+      if(millis()-lastTone >= 200){
+        lastTone = millis();
+        playTone();
+      }
       if(update){ //so only prints once
         Serial.println("In Alarm Stop 2 State"); 
         print_message("AS2");
@@ -634,11 +702,17 @@ void packmat(int input1, int input2, int input3, int input4){
           lastRemoteCheck = millis();
         }
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering number pad click
+      if(alarm_on == 0){
+        state = REST;
+          //reset the numCoded 
+          numCoded = 0;
+          break;
+      }
+      if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//entering number pad click
         Serial.println("Second number entered");
         Serial.println("Switching to Alarm Check 2");
         //print_message("AC2");
-        passcode[numCoded] = keypad.getKey()-'0';
+        passcode[numCoded] = key-'0';
         numCoded += 1;
         update = 1;
         //delay(150);
@@ -647,6 +721,10 @@ void packmat(int input1, int input2, int input3, int input4){
       break;
 
     case AC2:
+      if(millis()-lastTone >= 200){
+        lastTone = millis();
+        playTone();
+      }
       if(update){ //so only prints once
         Serial.println("In Alarm Check 2 State"); 
         print_message("AC2");
@@ -663,6 +741,12 @@ void packmat(int input1, int input2, int input3, int input4){
         else{
           lastRemoteCheck = millis();
         }
+      }
+      if(alarm_on == 0){
+        state = REST;
+          //reset the numCoded 
+          numCoded = 0;
+          break;
       }
       if(passcode[1] == correctPasscode[1]){ //correct
         Serial.println("Correct second number");
@@ -682,6 +766,10 @@ void packmat(int input1, int input2, int input3, int input4){
       break;
 
     case AS3:
+      if(millis()-lastTone >= 200){
+        lastTone = millis();
+        playTone();
+      }
       if(update){ //so only prints once
         Serial.println("In Alarm Stop 3 State"); 
         print_message("AS3");
@@ -699,11 +787,17 @@ void packmat(int input1, int input2, int input3, int input4){
           lastRemoteCheck = millis();
         }
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering number pad click
+      if(alarm_on == 0){
+        state = REST;
+          //reset the numCoded 
+          numCoded = 0;
+          break;
+      }
+      if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//entering number pad click
         Serial.println("Third number entered");
         Serial.println("Switching to Alarm Check 3");
         //print_message("AC3");
-        passcode[numCoded] = keypad.getKey()-'0';
+        passcode[numCoded] = key-'0';
         numCoded += 1;
         update = 1;
         //delay(150);
@@ -712,6 +806,10 @@ void packmat(int input1, int input2, int input3, int input4){
       break;
 
     case AC3:
+      if(millis()-lastTone >= 200){
+        lastTone = millis();
+        playTone();
+      }
       if(update){ //so only prints once
         Serial.println("In Alarm Check 3 State"); 
         print_message("AC3");
@@ -728,6 +826,12 @@ void packmat(int input1, int input2, int input3, int input4){
         else{
           lastRemoteCheck = millis();
         }
+      }
+      if(alarm_on == 0){
+        state = REST;
+          //reset the numCoded 
+          numCoded = 0;
+          break;
       }
       if(passcode[2] == correctPasscode[2]){ //correct
         Serial.println("Correct third number");
@@ -747,6 +851,10 @@ void packmat(int input1, int input2, int input3, int input4){
       break;
 
     case AS4:
+      if(millis()-lastTone >= 200){
+        lastTone = millis();
+        playTone();
+      }
       if(update){ //so only prints once
         Serial.println("In Alarm Stop 4 State"); 
         print_message("AS4");
@@ -764,11 +872,17 @@ void packmat(int input1, int input2, int input3, int input4){
           lastRemoteCheck = millis();
         }
       }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//entering number pad click
+      if(alarm_on == 0){
+        state = REST;
+          //reset the numCoded 
+          numCoded = 0;
+          break;
+      }
+      if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//entering number pad click
         Serial.println("Fourth number entered");
         Serial.println("Switching to Alarm Check 4");
         //print_message("AC4");
-        passcode[numCoded] = keypad.getKey()-'0';
+        passcode[numCoded] = key-'0';
         numCoded = 0;
         update = 1;
         //delay(150);
@@ -777,6 +891,10 @@ void packmat(int input1, int input2, int input3, int input4){
       break;
 
     case AC4:
+      if(millis()-lastTone >= 200){
+        lastTone = millis();
+        playTone();
+      }
       if(update){ //so only prints once
         Serial.println("In Alarm Check 4 State"); 
         print_message("AC4");
@@ -800,6 +918,7 @@ void packmat(int input1, int input2, int input3, int input4){
         //print_message("+REST"); //+means correct
         update = 1;
         //delay(150);
+        alarm_on = 0;
         state = REST;
       }else if(passcode[3] != correctPasscode[3]){//incorrect
         Serial.println("Incorrect fourth number");
@@ -817,22 +936,10 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("UM1");
         update = 0;
       }
-      if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
-        if(checkWebsiteAlarmStatus() == 0){
-          //alarm turns off so switch to state REST
-          state = REST;
-          //reset the numCoded 
-          numCoded = 0;
-          break;
-        }
-        else{
-          lastRemoteCheck = millis();
-        }
-      }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//enter number
+      if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//enter number
         Serial.println("First number entered");
         Serial.println("Switching to Unlock Check 1");
-        passcode[numCoded]=keypad.getKey()-'0';
+        passcode[numCoded]=key-'0';
         numCoded += 1;
         //print_message("UC1");
         update = 1;
@@ -846,18 +953,6 @@ void packmat(int input1, int input2, int input3, int input4){
         Serial.println("In Unlock Check 1 State"); 
         print_message("UC1");
         update = 0;
-      }
-      if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
-        if(checkWebsiteAlarmStatus() == 0){
-          //alarm turns off so switch to state REST
-          state = REST;
-          //reset the numCoded 
-          numCoded = 0;
-          break;
-        }
-        else{
-          lastRemoteCheck = millis();
-        }
       }
       if(passcode[0] == correctPasscode[0]){//correct
         Serial.println("Correct first number");
@@ -882,22 +977,10 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("UM2");
         update = 0;
       }
-      if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
-        if(checkWebsiteAlarmStatus() == 0){
-          //alarm turns off so switch to state REST
-          state = REST;
-          //reset the numCoded 
-          numCoded = 0;
-          break;
-        }
-        else{
-          lastRemoteCheck = millis();
-        }
-      }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//enter number
+      if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//enter number
         Serial.println("Second number entered");
         Serial.println("Switching to Unlock Check 2");
-        passcode[numCoded] = keypad.getKey()-'0';
+        passcode[numCoded] = key-'0';
         numCoded += 1;
         //print_message("UC2");
         update = 1;
@@ -911,18 +994,6 @@ void packmat(int input1, int input2, int input3, int input4){
         Serial.println("In Unlock Check 2 State"); 
         print_message("UC2");
         update = 0;
-      }
-      if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
-        if(checkWebsiteAlarmStatus() == 0){
-          //alarm turns off so switch to state REST
-          state = REST;
-          //reset the numCoded 
-          numCoded = 0;
-          break;
-        }
-        else{
-          lastRemoteCheck = millis();
-        }
       }
       if(passcode[1] == correctPasscode[1]){//correct
         Serial.println("Correct second number");
@@ -947,23 +1018,11 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("UM3");
         update = 0;
       }
-      if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
-        if(checkWebsiteAlarmStatus() == 0){
-          //alarm turns off so switch to state REST
-          state = REST;
-          //reset the numCoded 
-          numCoded = 0;
-          break;
-        }
-        else{
-          lastRemoteCheck = millis();
-        }
-      }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//enter number
+      if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//enter number
         Serial.println("Third number entered");
         Serial.println("Switching to Unlock Check 3");
         //print_message("UC3");
-        passcode[numCoded] = keypad.getKey()-'0';
+        passcode[numCoded] = key-'0';
         numCoded += 1;
         update = 1;
         //delay(150);
@@ -976,18 +1035,6 @@ void packmat(int input1, int input2, int input3, int input4){
         Serial.println("In Unlock Check 3 State"); 
         print_message("UC3");
         update = 0;
-      }
-      if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
-        if(checkWebsiteAlarmStatus() == 0){
-          //alarm turns off so switch to state REST
-          state = REST;
-          //reset the numCoded 
-          numCoded = 0;
-          break;
-        }
-        else{
-          lastRemoteCheck = millis();
-        }
       }
       if(passcode[2] == correctPasscode[2]){//correct
         Serial.println("Correct third number");
@@ -1012,23 +1059,11 @@ void packmat(int input1, int input2, int input3, int input4){
         print_message("UM4");
         update = 0;
       }
-      if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
-        if(checkWebsiteAlarmStatus() == 0){
-          //alarm turns off so switch to state REST
-          state = REST;
-          //reset the numCoded 
-          numCoded = 0;
-          break;
-        }
-        else{
-          lastRemoteCheck = millis();
-        }
-      }
-      if(keypad.getKey() && keypad.getKey() != 'A' && keypad.getKey() != 'B' && keypad.getKey() != 'C' && keypad.getKey() != 'D' && keypad.getKey() != '*' && keypad.getKey() != '#'){//enter number
+      if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//enter number
         Serial.println("Fourth number entered");
         Serial.println("Switching to Unlock Check 4");
         //print_message("UC4");
-        passcode[numCoded] = keypad.getKey()-'0';
+        passcode[numCoded] = key-'0';
         numCoded = 0;
         update = 1;
         //delay(150);
@@ -1041,18 +1076,6 @@ void packmat(int input1, int input2, int input3, int input4){
         Serial.println("In Unlock Check 4 State"); 
         print_message("UC4");
         update = 0;
-      }
-      if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
-        if(checkWebsiteAlarmStatus() == 0){
-          //alarm turns off so switch to state REST
-          state = REST;
-          //reset the numCoded 
-          numCoded = 0;
-          break;
-        }
-        else{
-          lastRemoteCheck = millis();
-        }
       }
       if(passcode[3] == correctPasscode[3]){//correct
         Serial.println("Correct fourth number");
@@ -1081,136 +1104,3 @@ void print_message(const char* message){
   tft.println(message);
 }
 
-void calibrate() {
-  Serial.println("***");
-  Serial.println("Start calibration:");
-  Serial.println("Place the load cell an a level stable surface.");
-  Serial.println("Remove any load applied to the load cell.");
-  Serial.println("Send 't' from serial monitor to set the tare offset.");
-
-  boolean _resume = false;
-  while (_resume == false) {
-    LoadCell.update();
-    if (Serial.available() > 0) {
-      if (Serial.available() > 0) {
-        char inByte = Serial.read();
-        if (inByte == 't') LoadCell.tareNoDelay();
-      }
-    }
-    if (LoadCell.getTareStatus() == true) {
-      Serial.println("Tare complete");
-      _resume = true;
-    }
-  }
-
-  Serial.println("Now, place your known mass on the loadcell.");
-  Serial.println("Then send the weight of this mass (i.e. 100.0) from serial monitor.");
-
-  float known_mass = 0;
-  _resume = false;
-  while (_resume == false) {
-    LoadCell.update();
-    if (Serial.available() > 0) {
-      known_mass = Serial.parseFloat();
-      if (known_mass != 0) {
-        Serial.print("Known mass is: ");
-        Serial.println(known_mass);
-        _resume = true;
-      }
-    }
-  }
-
-  LoadCell.refreshDataSet(); //refresh the dataset to be sure that the known mass is measured correct
-  float newCalibrationValue = LoadCell.getNewCalibration(known_mass); //get the new calibration value
-
-  Serial.print("New calibration value has been set to: ");
-  Serial.print(newCalibrationValue);
-  Serial.println(", use this as calibration value (calFactor) in your project sketch.");
-  Serial.print("Save this value to EEPROM adress ");
-  Serial.print(calVal_eepromAdress);
-  Serial.println("? y/n");
-
-  _resume = false;
-  while (_resume == false) {
-    if (Serial.available() > 0) {
-      char inByte = Serial.read();
-      if (inByte == 'y') {
-#if defined(ESP8266)|| defined(ESP32)
-        EEPROM.begin(512);
-#endif
-        EEPROM.put(calVal_eepromAdress, newCalibrationValue);
-#if defined(ESP8266)|| defined(ESP32)
-        EEPROM.commit();
-#endif
-        EEPROM.get(calVal_eepromAdress, newCalibrationValue);
-        Serial.print("Value ");
-        Serial.print(newCalibrationValue);
-        Serial.print(" saved to EEPROM address: ");
-        Serial.println(calVal_eepromAdress);
-        _resume = true;
-
-      }
-      else if (inByte == 'n') {
-        Serial.println("Value not saved to EEPROM");
-        _resume = true;
-      }
-    }
-  }
-
-  Serial.println("End calibration");
-  Serial.println("***");
-  Serial.println("To re-calibrate, send 'r' from serial monitor.");
-  Serial.println("For manual edit of the calibration value, send 'c' from serial monitor.");
-  Serial.println("***");
-}
-
-void changeSavedCalFactor() {
-  float oldCalibrationValue = LoadCell.getCalFactor();
-  boolean _resume = false;
-  Serial.println("***");
-  Serial.print("Current value is: ");
-  Serial.println(oldCalibrationValue);
-  Serial.println("Now, send the new value from serial monitor, i.e. 696.0");
-  float newCalibrationValue;
-  while (_resume == false) {
-    if (Serial.available() > 0) {
-      newCalibrationValue = Serial.parseFloat();
-      if (newCalibrationValue != 0) {
-        Serial.print("New calibration value is: ");
-        Serial.println(newCalibrationValue);
-        LoadCell.setCalFactor(newCalibrationValue);
-        _resume = true;
-      }
-    }
-  }
-  _resume = false;
-  Serial.print("Save this value to EEPROM adress ");
-  Serial.print(calVal_eepromAdress);
-  Serial.println("? y/n");
-  while (_resume == false) {
-    if (Serial.available() > 0) {
-      char inByte = Serial.read();
-      if (inByte == 'y') {
-#if defined(ESP8266)|| defined(ESP32)
-        EEPROM.begin(512);
-#endif
-        EEPROM.put(calVal_eepromAdress, newCalibrationValue);
-#if defined(ESP8266)|| defined(ESP32)
-        EEPROM.commit();
-#endif
-        EEPROM.get(calVal_eepromAdress, newCalibrationValue);
-        Serial.print("Value ");
-        Serial.print(newCalibrationValue);
-        Serial.print(" saved to EEPROM address: ");
-        Serial.println(calVal_eepromAdress);
-        _resume = true;
-      }
-      else if (inByte == 'n') {
-        Serial.println("Value not saved to EEPROM");
-        _resume = true;
-      }
-    }
-  }
-  Serial.println("End change calibration value");
-  Serial.println("***");
-}
