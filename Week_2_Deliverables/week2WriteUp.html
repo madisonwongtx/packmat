@@ -52,6 +52,28 @@
             was entered on the server, and we can therefore turn the alarm off on our ESP32. Meanwhile, we still allow for manual entering of the 
             correct passcode on the numberpad, as seen in last week's deliverable. Deliverable is met
         </p>
+        <h2>Goal 4</h2>
+        <h3>Integrate activation of system on server with physical scale, implement method to turn off alarm/ deactivate system on site, show a list of times alarm has sounded on site</h3>
+        <h4>Integrate activation of system on server with physical scale</h4>
+        <p>For this goal, we wanted the site to update and show that the system was active when an item was put on the physical scale and a passcode was entered on 
+            the numpad. To do this, I used the integrated state machine, numpad, and scale calibration code that we worked on this week, and added two POST requests.
+            First, I added a request in the setup to set the system as inactive (thus resetting the Packmat when turning it on), and then I send a request to 
+            activate the system after the passcode has been entered and we have moved into the LOCKED state. Next week, we will work on adding requests to other states
+            in order to deal with unlocking the system or alarms turning on/off.
+        </p>
+        <h4>Implement method to turn off alarm/ deactivate system on site</h4>
+        <p>
+            Whenever the system is active, the site will display an input to enter the passcode. This will deactivate the system and any alarms that may have set off, 
+            allowing the user to either turn off the alarm or take their package off the mat without setting off the alarm. To implement this, I added a form element on
+            the site, which sends a POST request to turn off the system if the passcode is correct. Since the site already gets the system's status every second, it is able
+            to update accordingly.
+        </p>
+        <h4>Show a list of times alarm has sounded</h4>
+        <p>
+            The site sends a GET request every three seconds to 
+            <a href="https://608dev-2.net/sandbox/sc/yechengz/packmat/alarms.py">https://608dev-2.net/sandbox/sc/yechengz/packmat/alarms.py</a>
+            which retrieves all times that the system has been active and the alarm has gone off. After each request, an undordered list on the site is updated.
+        </p>
     </body>
 
 </html>
