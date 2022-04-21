@@ -86,13 +86,13 @@ void setup() {
   Serial.println("Welcome to PackMat");
   Serial.begin(115200);
 
-  state = REST;
+  state = PM1;
   pinMode(input1, INPUT_PULLUP);
   pinMode(input2, INPUT_PULLUP);
   pinMode(input3, INPUT_PULLUP);
   pinMode(input4, INPUT_PULLUP);
 
-  print_message("REST");
+  print_message("PM1");
   update = 1;
 
 }
@@ -129,45 +129,6 @@ void loop() {
 void packmat(int input1, int input2, int input3, int input4){
   //Serial.println(curr_weight);
   switch(state){
-    case REST:
-      if(update){ //so only prints once
-        Serial.println("In Rest State"); 
-        print_message("REST");
-        update = 0;
-      }
-      if(curr_weight - old_weight>THRESHOLD){//pressure increase
-        Serial.println("Pressure increase detected.");
-        Serial.println("Switching to package confirmation 1 state");
-        //print_message("PC1");
-        update = 1;
-        delay(150);
-        state = PC1;
-      }
-      break;
-    
-    case PC1:
-      if(update){ //so only prints once
-        Serial.println("In PC1 State"); 
-        print_message("PC1");
-        update = 0;
-      }
-      if(!input3){//yes
-        Serial.println("Package Confirmed");
-        Serial.println("Switching to Program Mode 1");
-        //print_message("PM1");
-        update = 1;
-        delay(150);
-        state = PM1;
-      }else if(!input4){//no
-        Serial.println("No Package");
-        Serial.println("Switching to Rest");
-        //print_message("Rest");
-        update = 1;
-        delay(150);
-        state = REST;
-      }
-      break;
-
     case PM1:
       if(update){ //so only prints once
         Serial.println("In PM1 State"); 
@@ -224,11 +185,49 @@ void packmat(int input1, int input2, int input3, int input4){
       }
       if(!input1){//entering numbers
         Serial.println("Fourth number entered");
-        Serial.println("Switching to Locked");
+        Serial.println("Switching to REST");
         //print_message("LOCKED");
         update = 1;
         delay(150);
+        state = REST;
+      }
+      break;
+    case REST:
+      if(update){ //so only prints once
+        Serial.println("In Rest State"); 
+        print_message("REST");
+        update = 0;
+      }
+      if(curr_weight - old_weight>THRESHOLD){//pressure increase
+        Serial.println("Pressure increase detected.");
+        Serial.println("Switching to package confirmation 1 state");
+        //print_message("PC1");
+        update = 1;
+        delay(150);
+        state = PC1;
+      }
+      break;
+    
+    case PC1:
+      if(update){ //so only prints once
+        Serial.println("In PC1 State"); 
+        print_message("PC1");
+        update = 0;
+      }
+      if(!input3){//yes
+        Serial.println("Package Confirmed");
+        Serial.println("Switching to Program Mode 1");
+        //print_message("PM1");
+        update = 1;
+        delay(150);
         state = LOCKED;
+      }else if(!input4){//no
+        Serial.println("No Package");
+        Serial.println("Switching to Rest");
+        //print_message("Rest");
+        update = 1;
+        delay(150);
+        state = REST;
       }
       break;
 
