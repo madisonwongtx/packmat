@@ -37,7 +37,7 @@ unsigned long t = 0;
 uint8_t channel = 1; //network channel on 2.4 GHz
 byte bssid[] = {0x04, 0x95, 0xE6, 0xAE, 0xDB, 0x41}; //6 byte MAC address of AP you're targeting.
 
-char network[] = "MIT"; //change as needed
+char network[] = "EECS_Labs"; //change as needed
 char password[] = "";
 
 const int ROW_NUM = 4;
@@ -269,7 +269,7 @@ void setup() {
   Serial.println("Welcome to PackMat");
   Serial.begin(115200);
 
-  state = REST;
+  state = PM1;
   pinMode(input1, INPUT_PULLUP);
   pinMode(input2, INPUT_PULLUP);
   pinMode(input3, INPUT_PULLUP);
@@ -361,19 +361,6 @@ void loop() {
     }
   }
 
-  // receive command from serial terminal
-  if (Serial.available() > 0) {
-    char inByte = Serial.read();
-    if (inByte == 't') LoadCell.tareNoDelay(); //tare
-    else if (inByte == 'r') calibrate(); //calibrate
-    else if (inByte == 'c') changeSavedCalFactor(); //edit calibration value manually
-  }
-
-  // check if last tare operation is complete
-  if (LoadCell.getTareStatus() == true) {
-    Serial.println("Tare complete");
-  }
-
   //end get weight
   packmat(digitalRead(input1), digitalRead(input2), digitalRead(input3), digitalRead(input4));
 
@@ -396,18 +383,14 @@ void packmat(int input1, int input2, int input3, int input4){
         update = 0;
         postUpdate(0, 0);
       }
-      else{
-        state = PC1;
-        update = 1;
-      }
-      /*if(curr_weight - old_weight>THRESHOLD){//pressure increase
+      if(curr_weight - old_weight>THRESHOLD){//pressure increase
         Serial.println("Pressure increase detected.");
         Serial.println("Switching to package confirmation 1 state");
         //print_message("PC1");
         update = 1;
         //delay(150);
         state = PC1;
-      }*/
+      }
       break;
     
     case PC1:
@@ -422,7 +405,7 @@ void packmat(int input1, int input2, int input3, int input4){
         //print_message("PM1");
         update = 1;
         //delay(150);
-        state = PM1;
+        state = LOCKED;
       }else if(!input4){//no
         Serial.println("No Package");
         Serial.println("Switching to Rest");
@@ -510,7 +493,7 @@ void packmat(int input1, int input2, int input3, int input4){
         numCoded = 0;
         update = 1;
         //delay(150);
-        state = LOCKED;
+        state = REST;
       }
       break;
 
@@ -583,13 +566,9 @@ void packmat(int input1, int input2, int input3, int input4){
         alarm_on=1;
         update = 0;
       }
-      if (!input4){//stop alarm/unlock
-        Serial.println("Attempting to turn off alarm");
-        Serial.println("Switching to Alarm Stop 1");
-        //print_message("AS1");
-        update = 1;
-        //delay(150);
+      else{
         state = AS1;
+        update = 1;
       }
       break;
     
@@ -609,6 +588,7 @@ void packmat(int input1, int input2, int input3, int input4){
           state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
         }
         else{
@@ -619,6 +599,7 @@ void packmat(int input1, int input2, int input3, int input4){
         state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
       }
       if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//entering number pad click
@@ -651,6 +632,7 @@ void packmat(int input1, int input2, int input3, int input4){
           state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
         }
         else{
@@ -661,6 +643,7 @@ void packmat(int input1, int input2, int input3, int input4){
         state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
       }
       if(passcode[0] == correctPasscode[0]){ //correct
@@ -696,6 +679,7 @@ void packmat(int input1, int input2, int input3, int input4){
           state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
         }
         else{
@@ -706,6 +690,7 @@ void packmat(int input1, int input2, int input3, int input4){
         state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
       }
       if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//entering number pad click
@@ -736,6 +721,7 @@ void packmat(int input1, int input2, int input3, int input4){
           state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
         }
         else{
@@ -746,6 +732,7 @@ void packmat(int input1, int input2, int input3, int input4){
         state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
       }
       if(passcode[1] == correctPasscode[1]){ //correct
@@ -781,6 +768,7 @@ void packmat(int input1, int input2, int input3, int input4){
           state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
         }
         else{
@@ -791,6 +779,7 @@ void packmat(int input1, int input2, int input3, int input4){
         state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
       }
       if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//entering number pad click
@@ -821,6 +810,7 @@ void packmat(int input1, int input2, int input3, int input4){
           state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
         }
         else{
@@ -831,6 +821,7 @@ void packmat(int input1, int input2, int input3, int input4){
         state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
       }
       if(passcode[2] == correctPasscode[2]){ //correct
@@ -866,6 +857,7 @@ void packmat(int input1, int input2, int input3, int input4){
           state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
         }
         else{
@@ -876,6 +868,7 @@ void packmat(int input1, int input2, int input3, int input4){
         state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
       }
       if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//entering number pad click
@@ -906,6 +899,7 @@ void packmat(int input1, int input2, int input3, int input4){
           state = REST;
           //reset the numCoded 
           numCoded = 0;
+          update = 1;
           break;
         }
         else{
@@ -1103,4 +1097,3 @@ void print_message(const char* message){
   tft.setTextSize(4);
   tft.println(message);
 }
-
