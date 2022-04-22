@@ -7,9 +7,17 @@
         <h1>Week 2 Writeup</h1>
         <p>Madison, Ye Cheng, Claire, Michael</p>
         <h2>Goal 1</h2>
-        <h3>Goal</h3>
+        <h3>Make passcode functionality occur once</h3>
         <p>
-            explanation
+            Before the current implementation, users would need to enter a passcode every time the states switched from rest state to package confirmation state 1.
+            However, we figured that users would probably utilize the same password everytime and probably did not want to come set the passcode everytime they received a new package.
+            So the goal was to move the passcode functionality to the beginning where the user would set their password whenever the system started. To do this,
+            we just changed the starting state from REST to PM1 which is the first programing mode where users enter the first number of their code. Then after the user enters the 4th number of their
+            passcode into the keybad in PM4, instead of switching to LOCKED state, it will now transition to the REST state. The other change we made is that after PC1, if the user confirms package,
+            instead of moving to PM1, the state machine will transition to LOCKED state. We moved all four programming modes to the front of the switch statement to make it more logically
+            sound and easier for our code to be followed. 
+
+            This deliverable was met (yay!)
         </p>
     </body>
 </html>
