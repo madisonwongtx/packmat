@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Week 2 Writeup</title>
+        <title>Week 3 Writeup</title>
     </head>
     <body>
-        <h1>Week 2 Writeup</h1>
+        <h1>Week 3 Writeup</h1>
         <p>Madison, Ye Cheng, Claire, Michael</p>
         <h2>Goal 1</h2>
         <h3>Make passcode functionality occur once</h3>
@@ -16,6 +16,20 @@
             passcode into the keybad in PM4, instead of switching to LOCKED state, it will now transition to the REST state. The other change we made is that after PC1, if the user confirms package,
             instead of moving to PM1, the state machine will transition to LOCKED state. We moved all four programming modes to the front of the switch statement to make it more logically
             sound and easier for our code to be followed. 
+
+            This deliverable was met (yay!)
+        </p>
+        <h2>Goal 2</h2>
+        <h3>Integrate numberpad and alarm into state machine</h3>
+        <p>
+            Previously, the alarm and numberpad keypresses were simulated with button presses. Now, we integrate the helper functions
+            for playing the tone as well as the various other ones used to do put and get requests to the website. By replacing the button 
+            presses from before with the code used to sense button presses and incorporating the button presses from the last two weeks' deliverables,
+            the numberpad and alarms are appropriately integrated into the state machine. During the alarm states it runs playTone() and runs
+            period GET requests to see if the alarm was turned off remotely, and also continually senses the keypad. We also add additional post requests 
+            to the states in order to update the website status.
+
+            Now our state machine is entirely accurate, without the need of stand-in buttons
 
             This deliverable was met (yay!)
         </p>
