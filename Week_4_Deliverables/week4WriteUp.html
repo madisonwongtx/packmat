@@ -1,15 +1,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Week 2 Writeup</title>
+        <title>Week 4 Writeup</title>
     </head>
     <body>
-        <h1>Week 2 Writeup</h1>
+        <h1>Week 4 Writeup</h1>
         <p>Madison, Ye Cheng, Claire, Michael</p>
         <h2>Goal 1</h2>
-        <h3>Goal</h3>
+        <h3>Reconfigure LCD so users unfamiliar with state diagram understand what is going on</h3>
         <p>
-            explanation
+            We wanted to pack the screen of our PackMat to be practical so that users who were probably
+            unfamiliar with the state machine diagram could understand what was going on with their PackMat.
+            To do this, we created a new file that would have all the tft printing functions. This allowed 
+            us to have cleaner code since the state machine diagram code was already quite long. Then I went through
+            the different states that require instruction for the user and wrote separate functions for each. For example,
+            there are three cases when the keypad is used to enter 4 numbers: unlocking the locked PackMat, 
+            setting the passcode upon set up, and turning off the alarm. We thought it would be useful to let users see the numbers
+            that they are entering so I created four separate helper functions, one to print each number and then reused them
+            for all three cases. I also had the instructional page telling the user to enter the passcode with 4 digits. Finally,
+            I had an instruction screen for confirming packages or switching to unlocked mode from locked.
+
+            In order to make the state of the PackMat more clear, we also created displays for the delivery person
+            dropping the package off, a signal to show that the security systems have been triggered, as well as locked.
+
+            The goal was met (hooray!)
         </p>
     </body>
 </html>
