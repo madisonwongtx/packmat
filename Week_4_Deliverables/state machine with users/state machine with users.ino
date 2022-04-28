@@ -475,7 +475,7 @@ void packmat(int input1, int input2, int input3, int input4){
     case PC1:
       if(update){ //so only prints once
         Serial.println("In PC1 State"); 
-        //print_message("PC1");
+        packageConfirmation(tft);
         update = 0;
       }
       if(!input3){//yes
@@ -494,7 +494,7 @@ void packmat(int input1, int input2, int input3, int input4){
     case LOCKED:
       if(update){ //so only prints once
         Serial.println("In LOCKED State"); 
-        //print_message("LOCKED");
+        locked(tft);
         postUpdate(0, 1);
         numCoded = 0;
         update = 0;
@@ -520,7 +520,7 @@ void packmat(int input1, int input2, int input3, int input4){
     case PC2:
       if(update){ //so only prints once
         Serial.println("In PC2 State"); 
-        //print_message("PC2");
+        packageConfirmation(tft);
         update = 0;
       }
       if(!input3){//yes
@@ -545,7 +545,7 @@ void packmat(int input1, int input2, int input3, int input4){
       numCoded = 0;
       if(update){ //so only prints once
         Serial.println("In ALARM State"); 
-        //print_message("ALARM");
+        unlockAlarm(tft);
         postUpdate(1, 1);
         alarm_on=1;
         update = 0;
@@ -563,7 +563,7 @@ void packmat(int input1, int input2, int input3, int input4){
       }
       if(update){ //so only prints once
         Serial.println("In Alarm Stop 1 State"); 
-        //print_message("AS1");
+        unlock(tft);
         update = 0;
       }
       if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
@@ -593,6 +593,7 @@ void packmat(int input1, int input2, int input3, int input4){
         numCoded += 1;
         update = 1;
         state = AC1;
+        firstNum(tft, key);
       }
       
       break;
@@ -605,7 +606,6 @@ void packmat(int input1, int input2, int input3, int input4){
       }
       if(update){ //so only prints once
         Serial.println("In Alarm Check 1 State"); 
-        //print_message("AC1");
         update = 0;
       }
       if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
@@ -648,7 +648,6 @@ void packmat(int input1, int input2, int input3, int input4){
       }
       if(update){ //so only prints once
         Serial.println("In Alarm Stop 2 State"); 
-        //print_message("AS2");
         update = 0;
       }
       if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
@@ -678,6 +677,7 @@ void packmat(int input1, int input2, int input3, int input4){
         numCoded += 1;
         update = 1;
         state = AC2;
+        secondNum(tft, key);
       }
       break;
 
@@ -688,7 +688,6 @@ void packmat(int input1, int input2, int input3, int input4){
       }
       if(update){ //so only prints once
         Serial.println("In Alarm Check 2 State"); 
-        //print_message("AC2");
         update = 0;
       }
       if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
@@ -731,7 +730,6 @@ void packmat(int input1, int input2, int input3, int input4){
       }
       if(update){ //so only prints once
         Serial.println("In Alarm Stop 3 State"); 
-        //print_message("AS3");
         update = 0;
       }
       if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
@@ -761,6 +759,7 @@ void packmat(int input1, int input2, int input3, int input4){
         numCoded += 1;
         update = 1;
         state = AC3;
+        thirdNum(tft, key);
       }
       break;
 
@@ -771,7 +770,6 @@ void packmat(int input1, int input2, int input3, int input4){
       }
       if(update){ //so only prints once
         Serial.println("In Alarm Check 3 State"); 
-        //print_message("AC3");
         update = 0;
       }
       if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
@@ -814,7 +812,6 @@ void packmat(int input1, int input2, int input3, int input4){
       }
       if(update){ //so only prints once
         Serial.println("In Alarm Stop 4 State"); 
-        //print_message("AS4");
         update = 0;
       }
       if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
@@ -844,6 +841,7 @@ void packmat(int input1, int input2, int input3, int input4){
         numCoded = 0;
         update = 1;
         state = AC4;
+        fourthNum(tft, key);
       }
       break;
 
@@ -854,7 +852,6 @@ void packmat(int input1, int input2, int input3, int input4){
       }
       if(update){ //so only prints once
         Serial.println("In Alarm Check 4 State"); 
-        //print_message("AC4");
         update = 0;
       }
       if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
@@ -887,7 +884,7 @@ void packmat(int input1, int input2, int input3, int input4){
     case UM1:
       if(update){ //so only prints once
         Serial.println("In Unlock Mode 1 State"); 
-        //print_message("UM1");
+        unlock(tft);
         update = 0;
       }
       if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//enter number
@@ -897,13 +894,13 @@ void packmat(int input1, int input2, int input3, int input4){
         numCoded += 1;
         update = 1;
         state = UC1;
+        firstNum(tft);
       }
       break;
     
     case UC1:
       if(update){ //so only prints once
         Serial.println("In Unlock Check 1 State"); 
-        //print_message("UC1");
         update = 0;
       }
       if(passcode[0] == correctPasscode[0]){//correct
@@ -922,7 +919,6 @@ void packmat(int input1, int input2, int input3, int input4){
     case UM2:
       if(update){ //so only prints once
         Serial.println("In Unlock Mode 2 State"); 
-        //print_message("UM2");
         update = 0;
       }
       if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//enter number
@@ -932,13 +928,13 @@ void packmat(int input1, int input2, int input3, int input4){
         numCoded += 1;
         update = 1;
         state = UC2;
+        secondNum(tft, key);
       }
       break;
     
     case UC2:
       if(update){ //so only prints once
         Serial.println("In Unlock Check 2 State"); 
-        //print_message("UC2");
         update = 0;
       }
       if(passcode[1] == correctPasscode[1]){//correct
@@ -957,7 +953,6 @@ void packmat(int input1, int input2, int input3, int input4){
     case UM3:
       if(update){ //so only prints once
         Serial.println("In Unlock Mode 3 State"); 
-        //print_message("UM3");
         update = 0;
       }
       if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//enter number
@@ -967,13 +962,13 @@ void packmat(int input1, int input2, int input3, int input4){
         numCoded += 1;
         update = 1;
         state = UC3;
+        thirdNum(tft, key);
       }
       break;
     
     case UC3:
       if(update){ //so only prints once
         Serial.println("In Unlock Check 3 State"); 
-        //print_message("UC3");
         update = 0;
       }
       if(passcode[2] == correctPasscode[2]){//correct
@@ -992,7 +987,6 @@ void packmat(int input1, int input2, int input3, int input4){
     case UM4:
       if(update){ //so only prints once
         Serial.println("In Unlock Mode 4 State"); 
-        //print_message("UM4");
         update = 0;
       }
       if(key&& key!= 'A' && key!= 'B' && key!= 'C' && key!= 'D' && key!= '*' && key!= '#'){//enter number
@@ -1002,13 +996,13 @@ void packmat(int input1, int input2, int input3, int input4){
         numCoded = 0;
         update = 1;
         state = UC4;
+        fourthNum(tft, key);
       }
       break;
     
     case UC4:
       if(update){ //so only prints once
         Serial.println("In Unlock Check 4 State"); 
-        //print_message("UC4");
         update = 0;
       }
       if(passcode[3] == correctPasscode[3]){//correct
