@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Packmat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <form id="login-form">
+    <p>Username: <input id="username" name="username" type="text"></p>
+    <p>Password: <input id="password" name="password" type="password"></p>
+    <input type="submit" value="Log In">
+  </form>
+  <p id="login-message"></p>
+
+  <h4 id="greeting"></h4>
+  <button id="logout">Log Out</button>
+
+  <p id="passcode">System not active</p>
+  <p id="alarm-status">Alarm status: off</p>
+
+  <form id="passcode-form">
+    Enter passcode to deactivate Packmat: <input id="passcode-input" name="passcode" type="text">
+    <input type="submit">
+  </form>
+  <p id="message"></p>
+
+  <div id="alarm-history">
+    <h4>Times alarm has gone off:</h4>
+    <ul id="alarms-list"></ul>
+  </div>
+  
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>

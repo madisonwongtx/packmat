@@ -1,0 +1,27 @@
+#passcode-form {
+    display: none;
+}
+
+#login-form {
+    display: none;
+}
+
+#logout {
+    display: none;
+}
+
+#passcode {
+    display: none;
+}
+
+#alarm-status {
+    display: none;
+}
+
+#alarm-history {
+    display: none;
+}
+
+#greeting {
+    display: none;
+}
