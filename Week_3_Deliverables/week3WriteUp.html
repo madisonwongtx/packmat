@@ -40,9 +40,41 @@
             deliverable with the only difference being using two slabs instead of wood and a slab, and the wiring is much neater in the sense that
             the wires are not tangled with each other. It looks much more slick than the first platform. The readouts also produce very accurate
             readouts of +/- 1 gram of the true weight of an object. The only thing I would have to do now is store the calibration factor into the 
-            second user’s code so that it automatically calibrates and reads upon startup.
+            second user's code so that it automatically calibrates and reads upon startup.
 
             This deliverable was met (yay!)
+        </p>
+        <h2>Goal 4</h2>
+        <h3>Support multiple users on packmat site</h3>
+        <p>
+            For this week's goal, I implemented accounts on the server and website. Users are now able to see their personalized 
+            PackMat statuses based on their account credentials. To support this on the backend, I added a new SQL table to the server 
+            that stores usernames, passwords, and user ids. User ids are generated on account creation and contain 30 random capital letters. 
+            These sort of act as API keys that the front end uses to access requests (PUTs, GETs). If a valid user id isn't provided, the server 
+            will treat the user as signed out. This was added for security, since allowing a request to go through by simply having the username 
+            in the body allows anybody with the username to access the PackMat status. Instead, we use user ids in request bodies, which can only 
+            be retrieved from the server when logging in. In addition to the SQL table, I also two added new requests:
+            <ul>
+                <li>
+                    POST at <a href = "https://608dev-2.net/sandbox/sc/yechengz/packmat2/create_account.py">https://608dev-2.net/sandbox/sc/yechengz/packmat2/create_account.py</a>.
+                    The params are username and password. This creates a new account.
+                </li>
+                <li>
+                    POST at <a href = "https://608dev-2.net/sandbox/sc/yechengz/packmat2/login.py">https://608dev-2.net/sandbox/sc/yechengz/packmat2/create_account.py</a>.
+                    The params are also username and password. This 'logs in' to an account and returns the user id and username the credentials match.
+                </li>
+            </ul>
+            Also, for all requests that we supported previously, we now require a user_id param in either the body (POST) or URL (GET).
+        </p>
+        <p>
+            Note: I moved the new PackMat backend to <a href = "https://608dev-2.net/sandbox/sc/yechengz/packmat2">https://608dev-2.net/sandbox/sc/yechengz/packmat2</a>, 
+            keeping the old PackMat backend <a href = "https://608dev-2.net/sandbox/sc/yechengz/packmat">https://608dev-2.net/sandbox/sc/yechengz/packmat</a>
+            as is. This is so that old code will still work when we run them.
+        </p>
+        <p>
+            On the frontend, I implemented account login. Without valid credentials, the site will not have a valid user id, so it cannot send any requests that
+            involve the PackMat's state. On login, the site stores the user id and username in a cookie for 1 day, or until the user logs out. This is so that
+            users can refresh the page or close the browser without needing to log in again.
         </p>
     </body>
 </html>
