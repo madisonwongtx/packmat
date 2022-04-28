@@ -112,7 +112,7 @@ char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 int alarm_on;
 
 //user is yechengz
-char userID[] = "PFILTZCSYTZQLKWWDOXCXXDFKQMIWB"
+char userID[] = "PFILTZCSYTZQLKWWDOXCXXDFKQMIWB";
 
 uint8_t char_append(char* buff, char c, uint16_t buff_size) {
         int len = strlen(buff);
