@@ -12,8 +12,9 @@
             We wanted to pack the screen of our PackMat to be practical so that users who were probably
             unfamiliar with the state machine diagram could understand what was going on with their PackMat.
             To do this, we created a new file that would have all the tft printing functions. This allowed 
-            us to have cleaner code since the state machine diagram code was already quite long. Then I went through
-            the different states that require instruction for the user and wrote separate functions for each. For example,
+            us to have cleaner code since the state machine diagram code was already quite long. To make this work,
+            I passed in the TFT_eSPI object as a parameter to all my helper functions and the key from the keypad if needed.
+            Then I went through the different states that require instruction for the user and wrote separate functions for each. For example,
             there are three cases when the keypad is used to enter 4 numbers: unlocking the locked PackMat, 
             setting the passcode upon set up, and turning off the alarm. We thought it would be useful to let users see the numbers
             that they are entering so I created four separate helper functions, one to print each number and then reused them
