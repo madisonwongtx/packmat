@@ -24,10 +24,10 @@ void setPasscode(TFT_eSPI tft){
   tft.println("Set");
   tft.setCursor(20, 60);
   tft.println("Passcode");
-  tft.setTextSize(2);
-  tft.setCursor(10, 100);
+  tft.setTextSize(1);
+  tft.setCursor(30, 100);
   tft.println("Please Enter");
-  tft.setCursor(30, 120);
+  tft.setCursor(40, 120);
   tft.println("4 Digits");
 }
 
@@ -40,7 +40,6 @@ void firstNum(TFT_eSPI tft, char key){
 }
 
 void secondNum(TFT_eSPI tft, char key){
-  resetScreen(tft);
   tft.setTextColor(TFT_WHITE, TFT_BLUE);
   tft.setCursor(40, 50);
   tft.setTextSize(4);
@@ -48,7 +47,6 @@ void secondNum(TFT_eSPI tft, char key){
 }
 
 void thirdNum(TFT_eSPI tft, char key){
-  resetScreen(tft);
   tft.setTextColor(TFT_WHITE, TFT_BLUE);
   tft.setCursor(70, 50);
   tft.setTextSize(4);
@@ -56,23 +54,22 @@ void thirdNum(TFT_eSPI tft, char key){
 }
 
 void fourthNum(TFT_eSPI tft, char key){
-  resetScreen(tft);
   tft.setTextColor(TFT_WHITE, TFT_BLUE);
   tft.setCursor(100, 50);
   tft.setTextSize(4);
   tft.println(key);
-  tft.setTextSize(2);
-  tft.setCursor(20, 10);
+  tft.setTextSize(1);
+  tft.setCursor(30, 20);
   tft.println("Entered Code:");
 }
 
 void unarmed(TFT_eSPI tft){
   resetScreen(tft);
   tft.setTextColor(TFT_WHITE, TFT_BLUE);
-  tft.setCursor(20,10);
+  tft.setCursor(35,10);
   tft.setTextSize(2);
   tft.println("Please");
-  tft.setCursor(50, 40);
+  tft.setCursor(40, 40);
   tft.println("place");
   tft.setCursor(20, 70);
   tft.println("packages");
@@ -88,9 +85,9 @@ void packageConfirmation(TFT_eSPI tft){
   tft.println("Confirm");
   tft.setCursor(10, 35);
   tft.println("Package");
-  tft.setCursor(10, 100);
+  tft.setCursor(25, 100);
   tft.println("Yes");
-  tft.setCursor(50, 100);
+  tft.setCursor(80, 100);
   tft.println("No");
 }
 
@@ -133,24 +130,24 @@ void unlockAlarm(TFT_eSPI tft){
   tft.println("Enter");
   tft.setCursor(20, 60);
   tft.println("Passcode");
-  tft.setTextSize(2);
-  tft.setCursor(10, 100);
+  tft.setTextSize(1);
+  tft.setCursor(30, 100);
   tft.println("Please Enter");
-  tft.setCursor(30, 120);
+  tft.setCursor(40, 120);
   tft.println("4 Digits");
 }
 
 void unlock(TFT_eSPI tft){
-  tft.fillScreen(TFT_GREEN)
+  tft.fillScreen(TFT_GREEN);
   tft.setTextColor(TFT_WHITE, TFT_GREEN);
   tft.setCursor(40,10);
   tft.setTextSize(2);
-  tft.println("Set");
+  tft.println("Enter");
   tft.setCursor(20, 60);
   tft.println("Passcode");
-  tft.setTextSize(2);
-  tft.setCursor(10, 100);
+  tft.setTextSize(1);
+  tft.setCursor(30, 100);
   tft.println("Please Enter");
-  tft.setCursor(30, 120);
+  tft.setCursor(40, 120);
   tft.println("4 Digits");
 }

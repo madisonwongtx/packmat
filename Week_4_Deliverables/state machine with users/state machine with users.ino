@@ -4,8 +4,8 @@ unsigned long button_timer;
 const int BUTTON_TIMEOUT = 50;
 const int input1 = 45; //entering numbers
 const int input2 = 39; //pressure increase
-const int input3 = 38; //pressure decrease, yes, correct check
-const int input4 = 37; //no, incorrect check, unlock mode
+const int input3 = 37; //pressure decrease, yes, correct check
+const int input4 = 38; //no, incorrect check, unlock mode
 uint8_t state;
 int update;
 float old_weight;
@@ -25,8 +25,8 @@ int THRESHOLD = 5;
 #endif
 
 //pins:
-const int HX711_dout = 8; //mcu > HX711 dout pin
-const int HX711_sck = 9; //mcu > HX711 sck pin
+const int HX711_dout = 21; //mcu > HX711 dout pin
+const int HX711_sck = 20; //mcu > HX711 sck pin
 
 //HX711 constructor:
 HX711_ADC LoadCell(HX711_dout, HX711_sck);
@@ -368,6 +368,7 @@ void loop() {
   }
 
   //end get weight
+  Serial.println(curr_weight);
   packmat(digitalRead(input1), digitalRead(input2), digitalRead(input3), digitalRead(input4));
 
   //update old weight
@@ -537,6 +538,9 @@ void packmat(int input1, int input2, int input3, int input4){
         playTone();
         update = 1;
         state = ALARM;
+        alarm(tft);
+        display = millis();
+        while(millis()-display < 3000); //so can see fully entered code
       }
       break;
 
@@ -563,7 +567,7 @@ void packmat(int input1, int input2, int input3, int input4){
       }
       if(update){ //so only prints once
         Serial.println("In Alarm Stop 1 State"); 
-        unlock(tft);
+        unlockAlarm(tft);
         update = 0;
       }
       if (millis()- lastRemoteCheck >= REMOTE_CHECK_PERIOD){
@@ -894,7 +898,7 @@ void packmat(int input1, int input2, int input3, int input4){
         numCoded += 1;
         update = 1;
         state = UC1;
-        firstNum(tft);
+        firstNum(tft, key);
       }
       break;
     
