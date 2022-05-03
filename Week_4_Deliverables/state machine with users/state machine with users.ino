@@ -626,6 +626,8 @@ void setup() {
   lastRemoteCheck = millis();
   timer = millis();
   lastTone = millis();
+  user = username;
+  pwd = loginPassword;
   numPresses = 0;
 }
 
