@@ -10,7 +10,7 @@ Make sure that the Keypad library is installed. Look for Keypad library by Mark 
 uint8_t channel = 1; //network channel on 2.4 GHz
 byte bssid[] = {0x04, 0x95, 0xE6, 0xAE, 0xDB, 0x41}; //6 byte MAC address of AP you're targeting.
 
-char network[] = "MIT";
+char network[] = "EECS_Labs";
 char password[] = "";
 
 const int ROW_NUM = 4;
