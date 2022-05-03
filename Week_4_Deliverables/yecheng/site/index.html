@@ -1,0 +1,82 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Packmat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="body-inner">
+    <div id="login-page">
+      <h1 class="welcome">Welcome to Packmat!</h1>
+
+      <form id="login-form">
+        <h2>Sign In</h2>
+
+        <div>
+          <label for="username">Username:</label>
+          <input class="credential" id="username" name="username" type="text">
+        </div>
+
+        <div>
+          <label for="password">Password:</label>
+          <input class="credential" id="password" name="password" type="password">
+        </div>
+
+        <input class="button-purple" type="submit" value="Sign In">
+
+        <p id="login-message"></p>
+      </form>
+    </div>
+
+    <div id="main-page">
+      <h2 id="greeting"></h2>
+      <div class="section">
+        <h3 class="subtitle">Packmat Status</h3>
+        <hr noshade>
+        <p>
+          <span class="label">System status:</span>
+          <span id="active"> not active</span>
+        </p>
+        <p>
+          <span class="label">Set passcode:</span>
+          <span id="passcode"> not set</span>
+        </p>
+        <p>
+          <span class="label">Alarm status:</span>
+          <span id="alarm-status"> not set</span>
+        </p>
+        <button class="button-purple" id="deactivate">Deactivate System</button>
+      </div>
+
+      <form id="passcode-form">
+        <label for="passcode-input">Enter passcode to deactivate Packmat:</label>
+        <input class="credential" id="passcode-input" name="passcode-input" type="text">
+
+        <input class="button-purple" type="submit">
+        
+        <p id="passcode-message"></p>
+      </form>
+
+      <div class="section">
+        <h3 class="subtitle">Times Alarm has Gone off</h3>
+        <hr noshade>
+        <ul id="alarms-list"></ul>
+      </div>
+
+      <div class="section">
+        <h3 class="subtitle">Log Out</h3>
+        <hr noshade>
+        <button class="button-purple" id="logout">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>

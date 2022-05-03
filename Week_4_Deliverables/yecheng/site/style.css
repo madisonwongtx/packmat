@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,700;1,400&display=swap');
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 5px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    font-family: Roboto, sans-serif;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #fff;
+    margin: 0px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+form > div {
+    display: flex;
+    flex-direction: column;
+}
+
+hr {
+    width: auto;
+    height: 1px;
+    border: none;
+    background-color: #CCC;
+}
+
+#login-page {
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: none;
+}
+
+#login-form{
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+}
+
+#main-page{
+    display:none;
+}
+
+#greeting {
+    margin-top: 40px;
+}
+
+#logout {
+    margin-bottom: 40px;
+}
+
+#passcode-form {
+    display: none;
+}
+
+#deactivate {
+    width: 200px;
+    display: none;
+}
+
+.button-purple {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    width: 130px;
+    height: 30px;
+    background-color: #3D67FD;
+    border-style: none;
+    border-radius: 5px;
+}
+
+.button-purple:hover {
+    background-color: #0B40FE;
+}
+
+.button-purple:active {
+    background-color: #3D67FD;
+}
+
+.body-inner {
+    height: 100%;
+    width: 75%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+}
+
+.section{
+    margin-bottom: 40px;
+}
+
+.welcome {
+    font-size: 40px;
+    text-align: center;
+}
+
+.subtitle {
+    margin-bottom: 5px;
+    font-size: 24px;
+}
+
+.label {
+    font-weight: 600;
+}
+
+.credential {
+    height: 30px;
+    font-size: 18px;
+    border-style: hidden;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f8f8;
+    margin-bottom: 10px;
+}
