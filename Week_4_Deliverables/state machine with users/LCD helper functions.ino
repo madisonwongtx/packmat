@@ -151,3 +151,51 @@ void unlock(TFT_eSPI tft){
   tft.setCursor(40, 120);
   tft.println("4 Digits");
 }
+
+void logInUser(TFT_eSPI tft){
+  tft.fillScreen(TFT_BLUE);
+  tft.setTextColor(TFT_WHITE, TFT_BLUE);
+  tft.setCursor(40,10);
+  tft.setTextSize(2);
+  tft.println("Login");
+  tft.setTextSize(1);
+  tft.setCursor(15, 40);
+  tft.println("Enter Username:");
+  tft.println("press button 2 to");
+  tft.println("to confirm after eachletter");
+  tft.println("press button 1 to");
+  tft.println("submit username");
+  tft.println("2ABC");
+  tft.println("3DEF");
+  tft.println("4GHI");
+  tft.println("5JKL");
+  tft.println("6MNO");
+  tft.println("7PQRS");
+  tft.println("8TUV");
+  tft.println("9XYZ");
+}
+
+void logInPass(TFT_eSPI tft){
+  tft.fillScreen(TFT_BLUE);
+  tft.setTextColor(TFT_WHITE, TFT_BLUE);
+  tft.setCursor(40,10);
+  tft.setTextSize(2);
+  tft.println("Login");
+  tft.setTextSize(1);
+  tft.setCursor(15, 40);
+  tft.println("Enter Password:");
+  tft.println("press button 2 to");
+  tft.println("to confirm after eachletter");
+  tft.println("press button 1 to");
+  tft.println("submit username");
+  tft.println("2ABC");
+  tft.println("3DEF");
+  tft.println("4GHI");
+  tft.println("5JKL");
+  tft.println("6MNO");
+  tft.println("7PQRS");
+  tft.println("8TUV");
+  tft.println("9XYZ");
+}
+
+
