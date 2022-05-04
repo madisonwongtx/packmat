@@ -125,8 +125,29 @@ void packmat(int input1, int input2, int input3, int input4){
       if(update){
         create_account();
         login();
-        postUpdate(0, 0);
-        state = PM1;
+        char check[] = "incorrect password or username";
+        if (strcmp(message, check) == 0) {
+          state = BADLOGIN; 
+          update = 1;
+        } else {
+          postUpdate(0, 0);
+          state = PM1;
+        }
+      }
+      break;
+    case BADLOGIN:
+      if(update) {
+        badlogin(tft);
+        update = 0;
+      }
+      if(!input3 && millis()-timer >= 1000){
+        user = username;
+        pwd = loginPassword;
+        memset(username, 0, sizeof(username));
+        memset(loginPassword, 0, sizeof(loginPassword));
+        state = USERNAME;
+        update = 1;
+        timer = millis();
       }
       break;
     case REST:

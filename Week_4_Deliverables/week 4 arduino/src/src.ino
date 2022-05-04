@@ -98,6 +98,7 @@ const int REMOTE_CHECK_PERIOD = 1000;
 #define USERNAME 25
 #define PASSWORD 26
 #define LOGIN 27
+#define BADLOGIN 28
 
 int alarmStart = -1;
 
@@ -126,6 +127,7 @@ char* user;
 char* pwd;
 int prev_press;
 int numPresses;
+char message[200];
 
 void playTone(){
   ledcWriteTone(AUDIO_PWM,350);

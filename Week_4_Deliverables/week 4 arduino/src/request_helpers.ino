@@ -71,9 +71,15 @@ void login(){
   const int capacity = 300;
   StaticJsonDocument<capacity> doc;
   deserializeJson(doc,response_buffer);
-  const char * id = doc["user_id"];
-  sprintf(user_id, "%s", id);
-  Serial.println(user_id);
+  const char * mess = doc["message"];
+  sprintf(message, "%s", mess);
+  char check[] = "incorrect password or username";
+  Serial.println(message);
+  if (strcmp(message, check) != 0) {
+    const char * id = doc["user_id"];
+    sprintf(user_id, "%s", id);
+    Serial.println(user_id);
+  }
 }
 
 void create_account(){

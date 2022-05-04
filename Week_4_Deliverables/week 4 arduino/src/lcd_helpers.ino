@@ -198,4 +198,21 @@ void logInPass(TFT_eSPI tft){
   tft.println("9XYZ");
 }
 
-
+void badlogin(TFT_eSPI tft){
+  resetScreen(tft);
+  tft.setTextColor(TFT_WHITE, TFT_BLUE);
+  tft.setCursor(10,10);
+  tft.setTextSize(2);
+  tft.println("Incorrect");
+  tft.setCursor(15, 35);
+  tft.println("Username");
+  tft.setCursor(60, 60);
+  tft.println("or");
+  tft.setCursor(15, 85);
+  tft.println("Password");
+  tft.setTextSize(1);
+  tft.setCursor(10, 110);
+  tft.println("Press button 1 to");
+  tft.setCursor(30, 120);
+  tft.println("try again");
+}
