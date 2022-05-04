@@ -99,7 +99,7 @@ void locked(TFT_eSPI tft){
   tft.println("LOCKED");
   tft.setCursor(20, 120);
   tft.setTextSize(1);
-  tft.println("Press Button 1");
+  tft.println("Press Button 2");
   tft.setCursor(20, 135);
   tft.println("to unlock");
 }
@@ -161,9 +161,9 @@ void logInUser(TFT_eSPI tft){
   tft.setTextSize(1);
   tft.setCursor(15, 40);
   tft.println("Enter Username:");
-  tft.println("press button 2 to");
-  tft.println("to confirm after eachletter");
   tft.println("press button 1 to");
+  tft.println("to confirm after eachletter");
+  tft.println("press button 2 to");
   tft.println("submit username");
   tft.println("2ABC");
   tft.println("3DEF");
@@ -184,9 +184,9 @@ void logInPass(TFT_eSPI tft){
   tft.setTextSize(1);
   tft.setCursor(15, 40);
   tft.println("Enter Password:");
-  tft.println("press button 2 to");
-  tft.println("to confirm after eachletter");
   tft.println("press button 1 to");
+  tft.println("to confirm after eachletter");
+  tft.println("press button 2 to");
   tft.println("submit username");
   tft.println("2ABC");
   tft.println("3DEF");

@@ -99,6 +99,7 @@ const int REMOTE_CHECK_PERIOD = 1000;
 #define PASSWORD 26
 #define LOGIN 27
 #define BADLOGIN 28
+#define WAIT 29
 
 int alarmStart = -1;
 

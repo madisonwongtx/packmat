@@ -713,9 +713,9 @@ void packmat(int input1, int input2, int input3, int input4){
       }
       if(passcode[3] == correctPasscode[3]){//correct
         Serial.println("Correct fourth number");
-        Serial.println("Switching to REST");
+        Serial.println("Switching to WAIT");
         update = 1;
-        state = REST;
+        state = WAIT;
       }else if(passcode[3] != correctPasscode[3]){//incorrect
         Serial.println("Incorrect fourth number");
         Serial.println("Switching to LOCKED");
@@ -723,5 +723,11 @@ void packmat(int input1, int input2, int input3, int input4){
         state = LOCKED;
       }
       break;
+
+    case WAIT:
+      if(old_weight - curr_weight>THRESHOLD){
+        state = REST;
+      }
+
   }
 }
