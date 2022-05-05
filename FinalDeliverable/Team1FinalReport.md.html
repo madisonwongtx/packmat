@@ -4,9 +4,25 @@
 
 **PackMat - Final Report**
 
-PackMat overview and purpose
+An increasing trend seen in the news is package theft. It has become an increasing problem as users 
+try to find ways to keep their packages secure and safe from the thieves. Introducing the PackMat. 
+The newest package security system. With the PackMat, users can be assured that their packages will
+be safe. To do this, the PackMat platform is made of weight sensing cells that can detect changes in 
+weight to the nearest gram. Users will be able to create a username and password
+that can be used to control the PackMat from our website. When there is a package delivered, the delivery
+man will confirm that there is a package on the platform and therefore it will be in locked mode. In this 
+secure state, if there is a change in pressure without entering the password first to unlock the PackMat, 
+the alarm will sound alerting the user and the surrounding environment of the theft. The PackMat has 
+functionality so that the alarm can be turned off with the keypad on site. From the website, users 
+will be able to see the password they have set and when the alarm on the PackMat has gone off. Users 
+will also be able to turn off the alarm remotely from the website.
 
 ![Full System PackMat Demo](https://youtu.be/4RxPeEKQD0g)
 
 Functionality
 ===============================================================================
+The PackMat begins in a login and passcode setting state. This set up only happens once and then after
+enters the main loop of the state machine diagram. The main states for the PackMat are Rest, Locked, Alarm, 
+and Unlocked. The full state machine diagram is detailed below.
+
+![State Machine Diagram for PackMat](./State_Machine_6.08_Project.jpg)
