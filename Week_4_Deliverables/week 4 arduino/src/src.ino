@@ -37,7 +37,7 @@ unsigned long t = 0;
 uint8_t channel = 1; //network channel on 2.4 GHz
 byte bssid[] = {0x04, 0x95, 0xE6, 0xAE, 0xDB, 0x41}; //6 byte MAC address of AP you're targeting.
 
-char network[] = "MIT GUEST"; //change as needed
+char network[] = "EECS_Labs"; //change as needed
 char password[] = "";
 
 const int ROW_NUM = 4;
@@ -158,7 +158,7 @@ void setup() {
     while (1);
   }
   else {
-    LoadCell.setCalFactor(-20.5); // user set calibration value (float), initial value 1.0 may be used for this sketch
+    LoadCell.setCalFactor(20.68); // user set calibration value (float), initial value 1.0 may be used for this sketch
     Serial.println("Startup is complete");
   }
   while (!LoadCell.update());
@@ -259,7 +259,7 @@ void loop() {
     if (millis() > t + serialPrintInterval) {
       curr_weight = LoadCell.getData();
       //Serial.print("Load_cell output val: ");
-      //Serial.println(curr_weight);
+      Serial.println(curr_weight);
       newDataReady = 0;
       t = millis();
     }
