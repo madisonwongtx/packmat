@@ -2,8 +2,6 @@
 TFT_eSPI tft = TFT_eSPI();
 unsigned long button_timer;
 const int BUTTON_TIMEOUT = 50;
-const int input1 = 45; //entering numbers
-const int input2 = 39; //pressure increase
 const int input3 = 37; //pressure decrease, yes, correct check
 const int input4 = 38; //no, incorrect check, unlock mode
 uint8_t state;
@@ -119,8 +117,6 @@ char response_buffer[OUT_BUFFER_SIZE]; //char array buffer to hold HTTP response
 
 int alarm_on;
 
-//user is yechengz
-//char userID[] = "PFILTZCSYTZQLKWWDOXCXXDFKQMIWB";
 char user_id[50];
 char username[50];
 char loginPassword[50];
@@ -172,8 +168,6 @@ void setup() {
   Serial.begin(115200);
 
   state = USERNAME;
-  pinMode(input1, INPUT_PULLUP);
-  pinMode(input2, INPUT_PULLUP);
   pinMode(input3, INPUT_PULLUP);
   pinMode(input4, INPUT_PULLUP);
 
@@ -266,7 +260,7 @@ void loop() {
   }
 
   //end get weight
-  packmat(digitalRead(input1), digitalRead(input2), digitalRead(input3), digitalRead(input4));
+  packmat(digitalRead(input3), digitalRead(input4));
 
   //update old weight
   old_weight = curr_weight;

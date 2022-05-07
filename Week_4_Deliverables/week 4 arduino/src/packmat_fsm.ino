@@ -1,5 +1,5 @@
 //1: entering numbers/unlock mode, 2: pressure increase, 3: pressure decrease/yes/correct, 4: no/incorrect
-void packmat(int input1, int input2, int input3, int input4){
+void packmat(int input3, int input4){
   key = keypad.getKey();
   switch(state){
     case PM1:

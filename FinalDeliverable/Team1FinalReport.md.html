@@ -42,6 +42,25 @@ Hardware Layout
 
 Parts Lists 
 -------------------------------------------------------------------------------
+[Solderable Breadboard](https://www.adafruit.com/product/1606)
+
+* Total price: $6.95
+* Use case: Used to help connect weight s
+
+[3x4 Numberpad](https://www.adafruit.com/product/419?gclid=CjwKCAjwi6WSBhA-EiwA6Niok7_ik9O5mUpQZAu8cVJi6zW27UNA665ET1Sop1D6nTW__4h9YBZazhoC5d8QAvD_BwE)
+
+* Total price: $3.95
+* Use case: Used as a keypad to enter passcodes, usernames and passwords
+
+[Load Cell Amplifier](https://www.sparkfun.com/products/13879?_ga=2.228677528.507380733.1648994760-989291874.1648994760)
+
+* Total price: $10.95
+* Use case: Used to connect load cells to ESP32
+
+[Load Cell](https://www.amazon.com/Weighing-Resistance-Half-Bridge-Amplifier-Arduino/dp/B097T3SX6W/ref=asc_df_B097T3SX6W/?tag=hyprod-20&linkCode=df0&hvadid=533302859187&hvpos=&hvnetw=g&hvrand=3421353624175012600&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1018145&hvtargid=pla-1391941843433&psc=1)
+
+* Total price: $11.99
+* Use case: Used to sense weight
 
 
 Design Challenges and Decisions
@@ -52,6 +71,58 @@ Detailed Code Layout
 
 ESP32 Side
 -------------------------------------------------------------------------------
+**********************************************************
+*            Server-side                                 *
+*  .------------------------------.                      *
+* |     /                          |                     *
+* |     |                          |                     *
+* |     +--src/                    |                     *
+* |     |  |                       |                     *
+* |     |  +-- HX711_ADC-master/   |                     *
+* |     |      |                   |                     *
+* |     |      +-- stair_laser.ino |                     *
+* |     |                          |                     *
+* |     +-- src.ino                |                     *
+* |     |                          |                     *
+* |     +-- input_helpers.ino      |                     *
+* |     +-- lcd_helpers.ino        |                     *
+* |     +-- request_helpers.ino    |                     *
+* |     |                          |                     *
+* |     +-- packmat_fsm.ino        |                     *
+*  '------------------------------'                      *
+**********************************************************
+
+### HX711_ADC-master/
+
+The scripts in this folder were initially used to test out interfacing with the phototransistors and and the lasers in order to play notes. They are the only code here not run on the ESP32 for the final project.
+
+### src.ino
+
+In this file, all necessary global variables, such as timers, network and request parameters, and input pins for the buzzer and keypad are initialized. Moreover, all necessary setup, such as connecting to the WiFi 
+and setting up the keypad and buzzer are done in the setup method(). The loop function is in this file as well, so within each loop, we have code to sense the weight and the loop function calls the packmat function
+which contains the state machine. Finally, there is also the playTone() helper function that is used to play the alarm sound on the buzzer.
+
+### packmat_fsm.ino
+
+This file contains the full state machine. The state machine uses the various helper functions, inputs that represent the state of the function as passed in from the loop function, and the curr_weight as caculated in the loop function . 
+These values and functions are used to maintain state and perform actions depending on the state we are in
+
+### input_helpers.ino
+
+This file contains two helper functions : userKeyCheck() and passwordKeyCheck(). These helper functions use the state of the keypad to update the user and password variables initiated in src.ino. Hence,
+this file contains the helper functions used to update variables based on input, and they are utilized in the packmat_fsm.ino file.
+
+### lcd_helpers.ino
+
+This file contains helper functions that update the LCD screen according to state. This is called in the packmat_fsm.ino file in every state.
+
+### request_helpers.ino
+
+This file has all the helper functions related to sending post and get requests. The main helper function is the do_http_request() function as seen from labs throughout the semester, and this
+function uses a separate char_append helper function as well. Next, there are four helper functions that we use directly in packmat_fsm.ino : login(), create_account(), postUpdate(), and checkWebsiteAlarmStatus()
+login() and create_account() use the do_http_request helper function to send appropriate post requests to the login and create_account webpages on the server-side. Similarly, we also have checkWebsiteAlarmStatus() and postUpdate().
+checkWebsiteAlarmStatus() sends a get request to the main webpage to extract the current alarm status on the server; this is used to allow us to check if the alarm is turned off remotely. Similarly, postUpdate
+sends a properly-formatted POST request to the main webpage to update the webpage of a change in alarm status or the system status.
 
 Server Side
 -------------------------------------------------------------------------------

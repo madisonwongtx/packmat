@@ -219,14 +219,3 @@ void passwordKeyCheck(){
     tft.println(loginPassword);
   }
 }
-
-bool comparePasscodes(){
-  bool correct = true;
-    for(int i = 0;i < KEY_LENGTH; i++){
-      Serial.println(passcode[i]);
-      if(passcode[i] != correctPasscode[i]){
-        correct = false;
-      }
-    }
-  return correct;
-}
