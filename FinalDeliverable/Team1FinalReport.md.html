@@ -28,20 +28,39 @@ and Unlocked. The full state machine diagram and system block diagram is detaile
 
 Login Mode
 -------------------------------------------------------------------------------
-blah blah
+Once the system is started for the first time, users will be able to create a username and password through
+the PackMat using the keypad. The username and password they enter here will allow users to log into their account on our
+website so that they can monitor and change the status of their PackMat.
 
 Program Mode
 -------------------------------------------------------------------------------
-blah blah
+After completing the initial login, users will be prompted to create a password (using only numbers) that will be 
+utilized in unlocking and turning off the alarm in case of a security breach or package theft. This password must be set
+on the physical PackMat and can only be set once. This is an added on security measure.
 
 IDLE Mode
 -------------------------------------------------------------------------------
+After completing the login and progrmaming of password, the PackMat will reamin in IDLE until receiving a package.
+The PackMat is looking for an increase in pressure in order to trigger it to lock. Once a delivery man delivers a package
+on to the PackMat, they are then responsible for confirming that there is a package so that the PackMat will be locked. 
+If there is just an increase in pressure from something other than a package (like a leaf or animal), the IDLE state
+allows the PackMat to remain unlocked and not trigger any security measures if there is not a package.
 
 Locked Mode
 -------------------------------------------------------------------------------
+Once our PackMat is in locked mode, you can assure that your pacakge is secure. From here, users will have the ability to 
+unlock the PackMat, using the password they set in program mode, in order to retrieve their package without setting off the loud
+alarm. If there is another package delivered, the delivery person would still need to confirm the additional pacakge otherwise the alarm
+will sound. Similarly, if the PackMat detects a decrease in weight, an alarm will sound alerting the theif and nearby people of
+the possible theif.
 
 Security Features
 -------------------------------------------------------------------------------
+In order to make sure users have the most access to their PackMat, we have created a website where users can monitor
+and alter the status of PackMat remotely. If the alarm is to sound and they are not on site with the PackMat, users can login
+with the username and password they created when they first received the PackMat. Once logged in, users will be able to enter their
+4 digit passcode in order to disarm the alarm remotely. Users will also be able to see the dates and times of when the alarm has gone off
+as well as the status of the PackMat (like whether it is locked, meaning users have a package).
 
 
 Documentation
