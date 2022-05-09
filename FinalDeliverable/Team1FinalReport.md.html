@@ -120,7 +120,14 @@ Parts Lists
 Design Challenges and Decisions
 -------------------------------------------------------------------------------
 Some challenges in this project included:
-* problem 1
+* Figuring out a way to allow users to code their username and password. Our initial idea was to have the username and passcode hardcoded
+  on each machine. However, we wanted to add more flexibility. Thus, the challenge became : how could the user enter in their username and password 
+  on the physical machine, with the limited sensor available on the ESP32. A few options included using buttons to cycle through the letters(though this would 
+  take too long to cycle through all of the leters), restrict username and passwords to numbers only(thus, using the keypad only), or using the IMU to sense the orientation
+  of the board and assign letters to certain orientations of the board. We ruled out the IMU as the sensor is not always very dependable, and it wouldn't make sense to rotate the board 
+  in a real setting. Moreover, we ruled out restricting the username and password to numbers only, as the limitations didn't seem reasonable, given most usernames include letters of some sort
+  We finally landed on using the keypad in a format that emulated phones, in that each key would correspond to both the number itself as well as 3-4 letters. Once this was figured out, coding it
+  became a simple adaptation of the previous keypad-sensing functions as well as the usage and addition of some global variables to maintain username and password state.
 * problem 2
 * etc.
 
