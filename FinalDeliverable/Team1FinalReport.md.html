@@ -3,19 +3,19 @@
 
 **PackMat - Final Report**
 
-An increasing trend seen in the news is package theft. It has become an increasing problem as users 
-try to find ways to keep their packages secure and safe from the thieves. Many have installed cameras on 
-their doors but that just is not enough. 
+An increasing trend seen in the news is package theft, which has become a large problem as users 
+try to find ways to keep their packages secure and safe. Many have installed cameras on 
+their doors but that is usually not enough. 
 
-Introducing the PackMat! 
-The newest package security system. With the PackMat, users can be assured that their packages will
+Introducing PackMat! 
+The newest package security system. With PackMat, users can be assured that their packages will
 be safe. To do this, the PackMat platform is made of weight sensing cells that can detect changes in 
 weight to the nearest gram. Users will be able to create a username and password
 that can be used to control the PackMat from our website. When there is a package delivered, the delivery
-man will confirm that there is a package on the platform and therefore it will be in locked mode. In this 
+worker will confirm that there is a package on the platform and therefore it will be in locked mode. In this 
 secure state, if there is a change in pressure without entering the password first to unlock the PackMat, 
-the alarm will sound alerting the user and the surrounding environment of the theft. The PackMat has 
-functionality so that the alarm can be turned off with the keypad on site. From the website, users 
+the alarm will sound alerting the user and the surrounding environment of the theft, similar to a car alarm. 
+The PackMat has functionality so that the alarm can be turned off with the keypad on site. From the website, users 
 will be able to see the password they have set and when the alarm on the PackMat has gone off. Users 
 will also be able to turn off the alarm remotely from the website.
 
@@ -33,29 +33,31 @@ Login Mode
 -------------------------------------------------------------------------------
 Once the system is started for the first time, users will be able to create a username and password through
 the PackMat using the keypad. The username and password they enter here will allow users to log into their account on our
-website so that they can monitor and change the status of their PackMat.
+website so that they can monitor and change the status of their PackMat. If the user has an existing account, they can 
+enter their credentials in the same manner and will be logged in without creating a new account.
 
 Program Mode
 -------------------------------------------------------------------------------
-After completing the initial login, users will be prompted to create a password (using only numbers) that will be 
-utilized in unlocking and turning off the alarm in case of a security breach or package theft. This password must be set
+After completing the initial login, users will be prompted to create a 4 digit numerical passcode that will be 
+utilized in unlocking and turning off the alarm in case of a security breach or package theft. This passcode must be set
 on the physical PackMat and can only be set once. This is an added on security measure.
 
 IDLE Mode
 -------------------------------------------------------------------------------
-After completing the login and progrmaming of password, the PackMat will reamin in IDLE until receiving a package.
-The PackMat is looking for an increase in pressure in order to trigger it to lock. Once a delivery man delivers a package
-on to the PackMat, they are then responsible for confirming that there is a package so that the PackMat will be locked. 
-If there is just an increase in pressure from something other than a package (like a leaf or animal), the IDLE state
-allows the PackMat to remain unlocked and not trigger any security measures if there is not a package.
+After completing the login and programming of the passcode, the PackMat will remain in IDLE until receiving a package.
+The PackMat is looking for an increase in pressure in order to trigger it to lock. Once a delivery man places a package
+on to the PackMat, the load cell senses the increase in pressure and asks for confirmation. The delivery man is then 
+responsible for confirming with a button so that the PackMat will be locked. 
+This ensures that any increase in pressure caused from something other than a package (like a leaf or animal), would not
+trigger the locking mechanism to activate.
 
 Locked Mode
 -------------------------------------------------------------------------------
 Once our PackMat is in locked mode, you can assure that your pacakge is secure. From here, users will have the ability to 
 unlock the PackMat, using the password they set in program mode, in order to retrieve their package without setting off the loud
-alarm. If there is another package delivered, the delivery person would still need to confirm the additional pacakge otherwise the alarm
-will sound. Similarly, if the PackMat detects a decrease in weight, an alarm will sound alerting the theif and nearby people of
-the possible theif.
+alarm. If there is another package delivered, the delivery person can press a button to add and confirm an additional package (with the PackMat
+only allowing increases in weight) without triggering the alarm. On the other hand, if the PackMat detects a decrease in weight, an alarm will 
+sound warning the theif and alerting nearby people of the possible theft.
 
 Security Features
 -------------------------------------------------------------------------------
@@ -72,6 +74,15 @@ on how to set their username, password, and four digit passcode as well as instr
 the PackMat. In order to help users understand what state the PackMat is in, in addition to text instructions,
 we have also color coded the states. Red for alarm/security breach, green for unlock mode, and blue for locked. 
 
+Server/Website
+-------------------------------------------------------------------------------
+On the PackMat [website](https://608dev-2.net/sandbox/sc/yechengz/packmat2/index.html), users can log in with their account
+created on the physical mat. Once logged in, users will be able to view their PackMat's status in real-time, showing their 
+set passcode, whether the system is active, if the alarm is currently ringing, and previous timestamps of when the alarm has 
+been set off. Users can also deactivate the system/alarm by entering their set passcode.
+
+In addition to hosting the website, the server also supports multiple GET/POST requests to update and view PackMat states and
+deal with accounts and logins. These are further described in the documentation section.
 
 
 Documentation
@@ -180,7 +191,54 @@ sends a properly-formatted POST request to the main webpage to update the webpag
 
 Server Side
 -------------------------------------------------------------------------------
+### database.py
+This file provides helper functions to interface with the PackMat database, which contains two tables (state_db and accounts_db). For state_db, we have four functions:
 
+* create_table(): creates the state_db file and is called at the beginning of each request if the file has not been made already.
+* post_state(user_id, is_active, passcode, alarm_status): takes in four arguments describing the state of PackMat at a given time, and adds a row to state_db with the current timestamp.
+* get_latest_state(user_id): takes in a user id and gets the latest PackMat state for that user.
+* get_alarm_list(user_id): takes in a user id and gets the list of times when the user's PackMat has triggered its alarm.
+
+For accounts_db, we also have 4 functions:
+* create_accounts_table(): creates the accounts_db file and is called at the beginning of each request if the file has not been made already.
+* create_account(username, password): creates an account by adding the passed in username, password, and a randomly generated user_id to the accounts_db table
+* login(username, password): checks the state_db table for an account with the given username or password and returns the user_id if a match is found.
+* check_user_id(user_id): checks the state_db table for a user id and returns True if it exists and False otherwise.
+
+### request_handler.py
+Handles a GET and POST request. The GET request takes in a user id and returns the latest PackMat state for the given user. The POST request
+takes in a user id, passcode, alarm status (1 or 0), and PackMat active status (1 or 0), and then adds a row to the state_db table with the 
+provided data.
+
+### alarms.py
+Handles a GET request that takes in a user id and retrieves the history of PackMat alarms setting off for the given user.
+
+### check_passcode.py
+Handles a POST request that takes in a user id and passcode. Checks if the passcode of the given user matches and deactivates the system by turning the
+is_active and alarm_status off if a match occurs. Returns the latest is_active and alarm_status variable for the user.
+
+### create_account.py
+Handles a POST request that takes in a username and password. Creates an account and adds it to accounts_db if the username has not been already made.
+
+### login.py
+Handles a POST request taking in a username and password. Returns the user id if username and password matches.
+
+### index.html
+HTML for the PackMat website.
+
+### scripts.js
+This file handles events (button clicks, form input, etc) and cookies storing login credentials on the website. In addition, it also handles 
+GET/POST requests for logging in, retrieving and updating PackMat state, and checking passcodes.
+
+Cookies: We store user ids and usernames locally on the user's browser. This is to ensure that the user doesn't have to repeatedly log in
+whenever they refresh the page.
+
+Requests: By default, we send two GET requests repeatedly to the server. One request is sent every second and retrieves the PackMat's current state.
+The other is sent every three seconds and retrieves alarm history. In addition, we also send a request for retrieving user ids when logging in
+and a request to check passcodes when deactivating the system.
+
+### style.css
+Styling sheet (CSS) for the website.
 
 Milestone Contributions
 ===============================================================================
