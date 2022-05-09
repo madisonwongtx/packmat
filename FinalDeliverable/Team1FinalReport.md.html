@@ -128,8 +128,12 @@ Some challenges in this project included:
   in a real setting. Moreover, we ruled out restricting the username and password to numbers only, as the limitations didn't seem reasonable, given most usernames include letters of some sort
   We finally landed on using the keypad in a format that emulated phones, in that each key would correspond to both the number itself as well as 3-4 letters. Once this was figured out, coding it
   became a simple adaptation of the previous keypad-sensing functions as well as the usage and addition of some global variables to maintain username and password state.
-* problem 2
-* etc.
+* Another challenge is that the load cells would require calibration each time you started the PackMat. While this was no problem for our team, we could understand that a user would be confused
+  and thought it would be best to get rid of the calibration. We decided to code the calibration so that users of PackMat could ensure that the weight sensing was correct and they would not have 
+  to worry about making sure their calibration was correct.
+* In addition, we wanted to make the PackMat to be easily usable but we were limited by the size of our LCD to how much we could print on the PackMat. In order to solve this, we decided
+  to reduce the number of words on each screen to keep it from being cluttered while also changing text sizes to emphasize important messages. We also color 
+  coded the different states to help with ease of understanding (blue being locked and rest, red for alarm and security breach, and green for unlocked).
 
 
 
