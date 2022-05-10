@@ -95,8 +95,15 @@ Full System Diagram
 
 Hardware Layout
 -------------------------------------------------------------------------------
-### Hardware Diagram
+![PackMat Circuit Schematic](./PackMat_Circuit_Schematic.jpg)
 
+In our hardware layout, our team used the same wiring setup that we did in lab for the LCD screen and the buzzer. We only used 
+two hardware components that we did not have already: four load cells with an amplifier and a number pad. As seen in the diagram, 
+I connected the red wires to the appropriate pins in the load cell amplifier and connected the A- and E- load cell whites together, 
+the E+ and A+ whites together, the A- and E+ blacks together, and the A+ and E- blacks together. The red wires then get attached to its 
+associated pins on the amplifier. The amplifier is powered by 5 Volts from the ESP32, and SCK and DT are connected to pins 20 and 21 respectively.
+For the number pad, the wires from the number pad starting from left to right are connected to pins 11 to 4. PackMat is powered using 
+a user's computer. 
 
 
 Parts Lists 
@@ -256,12 +263,17 @@ so for each week, there is progress made to the server side and ESP32 as well as
 
 ![Initial Website with Updating PackMat Status](https://youtu.be/d5VPy7roORk)
 
+![PackMat Beta Version](https://youtu.be/L56GB7AJSXI)
+
 ## Week 2 - Beginning of Integration
 ![Integration of State Machine and Weight Scales](https://youtu.be/NnsDaAKGHfo)
 
 ![Remote Alarm Turn-off](https://youtu.be/pOyDTX0LhKg)
 
 ![Updating Site to Interact with Physical Components; Alarm History](https://youtu.be/r_jYikIuaeU)
+
+![Lode Cell Code Integration into State Machine Code](https://youtube.com/shorts/xo5BFoZYqQo?feature=share)
+
 
 ## Week 3 - Integration
 
@@ -271,6 +283,8 @@ so for each week, there is progress made to the server side and ESP32 as well as
 
 ![Multi-User Support](https://youtu.be/NRPxTTCbgEc)
 
+![PackMat Alpha Version](https://youtu.be/YdM8s3ot2iw)
+
 ## Week 4 - Multiple Users and Final Touches
 
 ![Final Product LCD Screens](https://youtu.be/jQnT2fozVUk)
@@ -278,6 +292,8 @@ so for each week, there is progress made to the server side and ESP32 as well as
 ![Keypad Coding of Username and Password](https://www.youtube.com/watch?v=ajVQP-ITg08)
 
 ![Styling the Website](https://youtu.be/R_qq_vVDY-A)
+
+![PackMat Final Version](https://youtu.be/N1tGKgAEosM)
 
 Team Members 
 ===============================================================================
